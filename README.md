@@ -10,6 +10,7 @@ GitHub listing:https://github.com/e-motiv/Webextension-Bookmarks-in-search-engin
 * Display bookmarks results on the search engine page
 * Search bookmarks for same keywords in url and title 
 * Search bookmarks for exact matching urls from search engine results and highlight them
+* Mark keywords in different colors (optional)
 
 ## Future features when addon-API "bookmarks" is good like before again
 * Show bookmark favicon

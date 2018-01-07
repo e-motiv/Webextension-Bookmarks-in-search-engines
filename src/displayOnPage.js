@@ -46,6 +46,20 @@ portBG.onMessage.addListener( (m)=> {				//console.log("Messsage from BG receive
 
 })
 
+/************************************* OPTIONS ************************************
+************************************************************************************/
+var opts = {}		//must declare if no options yet keyhigh: true
+browser.storage.local.get("keyhigh")
+	.then(
+		result => {
+			opts = result
+			getSearchBox()
+		}, 
+		error => {
+			msg(`Error while getting your options: ${error}`, "warning")
+			console.error(`Error while getting your options: ${error}`)
+		}
+	)
 /****** VIEW PANE (including minimize and restore) + activating bookmark sidebar****
 ************************************************************************************/
 
@@ -88,18 +102,26 @@ function disable(e)  {											//console.log("Disabling content script")
     myHilitor = null
 }
 
+function msg(t,cls) {
+
+	if(cls)
+		bsmsg.classList.add(cls)
+	bsmsg.style.display = "block"
+	bsmsg.textContent	= t	
+}
+
 /**** Grabbing SE searchbox and general searching logic ****
 ************************************************************/
 
-getSearchBox()
-
 function getSearchBox() {
-	if (searchBox	= document.getElementById("lst-ib") || document.querySelector("input[type=text]:enabled")) {
+	if (searchBox	= document.getElementById("lst-ib") || document.querySelector("input[type=text]:enabled") || document.querySelector("input[type=search]:enabled")) {
 		listenToSearchBox()
-	} else return
+	} else {
+		msg("Could not grab searchbox", "warning")
+	}
 }
 
-function listenToSearchBox() {								//console.log("listenToSearchBox",searchBox)
+function listenToSearchBox() {											//console.log("listenToSearchBox",searchBox)
 	
 	//if already filled in
 	searchBasic()
@@ -112,19 +134,31 @@ function listenToSearchBox() {								//console.log("listenToSearchBox",searchBo
 function searchAfterType(e=null) {
 	delaySearch(350)
 }
-function delaySearch(s) {									//console.log("delaying Search, ms: ",s)
+function delaySearch(s) {												//console.log("delaying Search, ms: ",s)
 	clearTimeout(searchDelay)
 	searchDelay = setTimeout(searchBasic, s)
 }
 
 function searchError(error, type) {
-	bsmsg.style.display = "block"
-	bsmsg.replaceInner(`Bookmark search error:<br>${error}`)	
+	msg(`Bookmark search error:<br>${error}`)
 	if (type == 1) 
 		inProgress = false
 	else
 		//Keep URL chain going
 		searchNextUrlBm()
+}
+
+function execReplace(t) {
+	if (ws = KEY_RE.exec(t)) {
+		let re = t
+		ws.forEach((w,i) => {
+			if (i==0)
+				return
+			re = re.replace(w, `<mark class="m${i}">$&</mark>`)
+		})
+		return re
+	}
+	return false
 }
 
 
@@ -135,6 +169,12 @@ function searchBasic(e=null) {								//console.log("searchBasic  /  event ->",e
 
 	timeB = performance.now()
     searchTerm=searchBox.value.trim()
+    
+    //Prepare regex for marking keywords
+	if (opts.keyhigh) {
+
+		KEY_RE	= new RegExp( "(" + searchTerm.replace(/\s+/g, ')|(') + ")", "ig" )
+	}
 
 	//Inverse desire, but since we don't know a way to interrupt the search, we have to wait for it, otherwise overload!
 	if (inProgress) { 										//console.log("Search in progress, inProgress: ", inProgress)
@@ -149,8 +189,7 @@ function searchBasic(e=null) {								//console.log("searchBasic  /  event ->",e
         searchDelay = false
     }    
     
-	if ((searchTerm.length < 2) || (searchTerm == lastSearch)) {
-		console.log("No search because ", (searchTerm.length < 2)?"searchterm's length < 2,":"same as lastsearch,", "searchTerm:", searchTerm,"lastSearch:",lastSearch)
+	if ((searchTerm.length < 2) || (searchTerm == lastSearch)) {		//console.log("No search because ", (searchTerm.length < 2)?"searchterm's length < 2,":"same as lastsearch,", "searchTerm:", searchTerm,"lastSearch:",lastSearch)
 		//If refresh of page load with searchbox filled in, the page javascript magic often loads the searchbox later.
 		if (justLoaded) {									//console.log("justLoaded, trying once more")
 			justLoaded	= false
@@ -186,15 +225,24 @@ function showBasicResults(bms) {						//console.log("showBasicResults, bms:",bms
 		bsresults.replaceInner(htmlResult)
 	} else {
 		bsbfound.classList.add("warning")
-		bsmsg.style.display	= "block"
-		bsmsg.innerText		+= "Found no bookmarks with keywords. Showing old results."
+		msg("Found no bookmarks with keywords. Showing old results.")
 	}
 	bsbmsg.textContent	= "Found: " + num
 
 }
-function makeHtml(bm) {										//	console.log(bm.id,bm.title,bm.url )
+function makeHtml(bm) {														//console.log(bm.id,bm.title,bm.url )
 	let title	= bm.title.trim().length<1?"____No Title____":bm.title
-	htmlResult	+=	`<div><h3><a href="">${title}</a></h3><div><cite>${bm.url}</cite></div></div>`
+	//Mark keywords
+	if (opts.keyhigh) {
+		
+		if (temp = execReplace(title)) {				
+			title = temp
+		}
+		texturl = (temp=execReplace(bm.url))?temp:bm.url
+	} else {
+		texturl = bm.url
+	}
+	htmlResult	+=	`<div><h3><a href="${bm.url}">${title}</a></h3><div><cite>${texturl}</cite></div></div>`
 }
 
 
@@ -216,7 +264,7 @@ function searchUrls() {													//console.log("searchUrls Start")
 }
 
 let nv,
-	skipTags 	= new RegExp("^(?:SCRIPT|FORM|INPUT|TEXTAREA|IFRAME|VIDEO|AUDIO|STYLE|META)$"),
+	skipTags 	= new RegExp("^(?:SCRIPT|FORM|INPUT|TEXTAREA|IFRAME|VIDEO|AUDIO|STYLE|META|NOSCRIPT)$"),
 	SCHEME		= "([a-z\\d.-]+)://",
 	HOSTNAME	= "(?:(?:[^\\s!@#$%^&*()_=+[\\]{}\\\\|;:'\",.<>/?]+)\\.)+",
 	TLD			= "[a-z]{2,6}",
@@ -225,7 +273,8 @@ let nv,
 	QUERY_FRAG	= "(?:\\?[^#<>\\s]*)?(?:#[^<>\\s]*)?",
 	URI1		= "\\b" + SCHEME + "[^<>\\s]+",
 	URI2		= "\\b" + HOST + PATH + QUERY_FRAG + "(?!\\w)",
-	URI_RE		= new RegExp( "(?:" + URI1 + "|" + URI2 + ")", "ig" )
+	URI_RE		= new RegExp( "(?:" + URI1 + "|" + URI2 + ")", "ig" ),
+	KEY_RE
 
 function findUrlsInPage(node) {												//console.log("findUrlsInPage, loop:",findUrlsInPage.i++, "node:",node)
 	
@@ -237,6 +286,9 @@ function findUrlsInPage(node) {												//console.log("findUrlsInPage, loop:"
 			( (node.nodeType === 3) && (nv = node.textContent.trim()) ) ||
 			( (node.nodeType === 1) && node.hasAttribute("href") && (nv=node.href) )
 		) {
+		
+		
+		//URL search
 		if ( regs = URI_RE.exec(nv) ) {										//console.log("found url regex", regs)
 			//store parent nodes for textnodes (for highliting later etc.)
 			let nodeHi = node.nodeType === 3?node.parentNode:node
@@ -256,6 +308,17 @@ function findUrlsInPage(node) {												//console.log("findUrlsInPage, loop:"
 			}
 				
 		}
+
+		//Mark keywords
+		if ( (node.nodeType === 3) && opts.keyhigh && (temp = execReplace(nv))) {		//console.log("--found text",nv, node)
+
+			let marked = document.createElement("span")
+			marked.innerHTML = temp
+			//node = node.parentNode.replaceChild(node, marked)
+			node.parentNode.insertBefore(marked, node);
+			node.parentNode.removeChild(node);
+		}
+		
 	} 
 	
 	// traversing through DOM
@@ -265,21 +328,24 @@ function findUrlsInPage(node) {												//console.log("findUrlsInPage, loop:"
 
 }
 
-function searchNextUrlBm(start=false) {					//console.log("searchNextUrlBm", searchNextUrlBm.i, urls.length, urls[searchNextUrlBm.i])
+function searchNextUrlBm(start=false) {								//console.log("searchNextUrlBm", searchNextUrlBm.i, urls.length, urls[searchNextUrlBm.i])
 	if (start) {
 		searchNextUrlBm.i = 0
 	}
 	else
 		searchNextUrlBm.i++
+
+	//At end
 	if (searchNextUrlBm.i>=urls.length){
 		//Waiting animated icon
 		uWait.classList.remove("active")
 		timeU = performance.now() - timeU
-		bsufound.classList.add(urlsFound?"success":"warning")
+		if (!urlsFound)
+			bsufound.classList.add("warning")
 		bsumsg.textContent	= `Found: ${urlsFound}`
 		bstime.textContent	+= `    -    ${timeI.toFixed()} ms - ${timeU.toFixed()} ms`
 		return
-	}														//	console.log("request next url search", searchNextUrlBm.i, urls.length, urls[searchNextUrlBm.i])
+	}																//console.log("request next url search", searchNextUrlBm.i, urls.length, urls[searchNextUrlBm.i])
 	portBG.postMessage({fn:"searchUrlBm", pms:urls[searchNextUrlBm.i].text, searchType:2})
 }
 function showUrlResult(bms) {
@@ -287,6 +353,7 @@ function showUrlResult(bms) {
 	if (bms.length > 0) {
 		urlsFound++
 		urls[searchNextUrlBm.i].node.classList.add("urlInPage")
+		bsufound.classList.add("success")
 	}
 	searchNextUrlBm()
 }

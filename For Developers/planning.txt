@@ -1,16 +1,22 @@
+Check TODO's inline and put here
+---------------------------------------------
+DONE: 
+* Fix error in ecosia
+* Mark keywords in different colors (optional)
 
-Check TODO's inline
+BUG!!!!!!!
+When doing 2 searches in 2 tabs at same time, something goes wrong
+
+TODO: Don't show viewpane if no searchterms
+	DO it via class (so we can still display messages)
 
 setup donation link on addons page
 (patreon?  or paypal? Anyway, ait until virus gone)
-
-ecosia not working
 
 TODO: Add button to manually activate and option for "always on this site?" and "never on this site"
 
 TODO: Give each engine something to speed up search, changeable in options
 
-TODO:	Mark keywords (make option in options)
 
 TODO: When sarch engine doesn't refresh but uses ajax, trigger search too!
 
@@ -26,12 +32,8 @@ TODO: BUG!!  Sometimes clicking on the search engine generated links doesn't do 
 
 
 TODO:
-//options and templates
+//search engine options
 /*
-const includes			= myPref.prefs.SEs.split(",").map (v => new RegExp(v.trim()))
-console.log(includes)
-const template			= self.data.load("template.html")
-
 browser.tabs.executeScript({file:displayOnPage.js})
 */
 
