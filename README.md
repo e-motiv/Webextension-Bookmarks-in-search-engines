@@ -1,7 +1,9 @@
 # Firefox Addon - Bookmarks in search engines
 Search, highlight and display relevant bookmarks when searching in your favorite search engine (Google only for now)
 
-https://addons.mozilla.org/en-US/firefox/addon/bookmarks-in-search-engines/
+Firefox listing: https://addons.mozilla.org/en-US/firefox/addon/bookmarks-in-search-engines/
+
+GitHub listing:https://github.com/e-motiv/Webextension-Bookmarks-in-search-engines
 
 ## Features
 * Search engines:google.pt, google.com, stackoverflow.com, dogpile.com, baidu.com, yahoo.com, bing.com, ask.com, ecosia.org
