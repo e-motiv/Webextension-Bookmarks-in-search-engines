@@ -1,0 +1,1 @@
+{"ide":{"scriptPaths":[{"type":"FOLDER","path":"src/data"}]},"plugins":{"guess-types":{},"outline":{},"complete_strings":{},"doc_comment":{},"requirejs":{"paths":{}},"browser-extension":{}},"libs":["ecma5","ecma6","browser"]}

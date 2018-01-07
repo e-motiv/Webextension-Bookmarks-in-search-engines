@@ -1,0 +1,42 @@
+
+Check TODO's inline
+
+setup donation link on addons page
+(patreon?  or paypal? Anyway, ait until virus gone)
+
+ecosia not working
+
+TODO: Add button to manually activate and option for "always on this site?" and "never on this site"
+
+TODO: Give each engine something to speed up search, changeable in options
+
+TODO:	Mark keywords (make option in options)
+
+TODO: When sarch engine doesn't refresh but uses ajax, trigger search too!
+
+TODO: When bookmark found in search results below scrolling, show an arrow at bottom to notify user
+TODO:	Find bookmarks from "searchUrls" back in myView results, color those search results very specially and put on top!
+
+TODO: Do we need to stop our chain and other searches when the page reloads while searching?
+TODO: CLeanup on port diconnect
+
+TODO: when url search stops, chain is broken (use timer!) (see try..catch)
+
+TODO: BUG!!  Sometimes clicking on the search engine generated links doesn't do anything anymore.
+
+
+TODO:
+//options and templates
+/*
+const includes			= myPref.prefs.SEs.split(",").map (v => new RegExp(v.trim()))
+console.log(includes)
+const template			= self.data.load("template.html")
+
+browser.tabs.executeScript({file:displayOnPage.js})
+*/
+
+
+*********** TO REMEMBER ***********************
+URL regex find was taken from among other things	-------->	http://benalman.com/code/test/js-linkify/		
+If doing different kind of searches, order them by fastest first
+			

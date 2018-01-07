@@ -1,0 +1,275 @@
+#bs-pane {
+	box-sizing: border-box;
+	position: fixed;
+	top: 80px;
+	right: 0;
+	z-index: 500;
+	margin: 1em;
+	padding: 1.5em;
+	overflow: auto;
+	background-color: hsl(245, 100%, 89%);
+	box-shadow: -0.4em 0.4em 0.8em 0.2em;
+	border-radius: 5px;
+	width: 40%;
+	resize: both;
+	height: calc(100vh - 80px - 2em);
+}
+
+/* Minimize etc*/
+#bs-pane.hidden {
+	height: 30px;
+	width: 30px;
+	overflow: hidden;
+	position: fixed;
+	top: 0;
+	right: 0;
+}
+
+#bs-pane #bs-min, #bs-pane #bs-max, #bs-pane #bs-close {
+	position: absolute;
+	box-sizing: border-box;
+	width: 24px;
+	height: 24px;
+	text-align: center;
+}
+#bs-pane #bs-min:hover, #bs-pane #bs-close:hover {
+	text-decoration: none;
+	background: white;
+}
+#bs-pane #bs-min, #bs-pane #bs-close {
+	top: 0.5em;
+	border: 1px solid hsl(0, 0%, 50.2%);
+	border-radius: 5px;
+	box-shadow: 0px 0px 2px hsl(0, 0%, 50.2%) inset;
+	text-align: center;
+	height: 1.7em;
+	line-height: 1.5em;
+	padding: 0.1em;
+}
+#bs-pane #bs-min {
+	right: 36px;
+	background: transparent;
+}
+
+#bs-pane #bs-close {
+	right: 12px;
+	background: rgba(183, 0, 0, 0.6);
+}
+#bs-pane #bs-max {
+	display: none;
+}
+
+#bs-pane.hidden #bs-min, #bs-pane.hidden * {
+	display: none;
+}
+
+#bs-pane.hidden #bs-max {
+	display: block;
+	background: transparent url("chrome://browser/skin/places/allBookmarks.png") center no-repeat;
+	background-size: 24px 24px;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	background-size: 24px 24px;
+}
+
+#bs-pane #bs-icon {
+	background: transparent url("chrome://browser/skin/places/allBookmarks.png") center 20% no-repeat;
+	width: 1em;
+	height: 1em;
+	float: left;
+	padding: 0.5ex;
+	background-size: 1em 1em;
+}
+
+
+#bs-pane h2 {
+	margin-top: 0;
+}
+
+#bs-pane h2 .info {
+	font-size: 50%;
+	margin-left: 2em;
+	vertical-align: middle;
+}
+#bs-pane #bstime {
+	opacity: 0.4;
+}
+#bs-pane h3 {
+	font-size: 130%;
+}
+
+#bs-pane #bsresults {
+	overflow-x: hidden;
+	overflow-y: auto;
+	max-height: calc(100% - 4em);
+	box-sizing: border-box;
+}
+
+#bs-pane a {
+	text-decoration: none;
+}
+
+#bs-pane a:hover {
+	text-decoration: underline;
+}
+
+#bs-pane #bsresults>div {
+	margin-bottom: 1.5em;
+}
+
+#bs-pane #bsresults cite {
+	white-space: nowrap;
+	/*	color: hsl(180, 85%, 80%);*/
+}
+
+#bs-pane #bsresults description {
+	color: hsl(0, 0%, 33%);
+}
+
+#bs-pane #bsresults .tags {
+	word-spacing: 0.7em;
+	font-weight: bold;
+	text-shadow: 0.1ex 0.1ex 0.05ex hsla(267, 100%, 20%, 0.4);
+	font-size: 0.9em;
+}
+
+#bs-pane #bsresults .tags a {
+	color: hsla(267, 100%, 50%, 0.2);
+}
+
+.info {
+	font-size: 70%;
+	text-align: center;
+	padding: 0.5em 1em;
+	border: 1px solid hsla(23, 100%, 20%, 0.4);
+	border-radius: 0.5em;
+	color: hsla(240, 100%, 17%, 0.8);
+	background-color: hsla(240, 100%, 80%, 0.4);
+	border-color: hsla(240, 100%, 20%, 0.4);
+}
+
+.success {
+	color: hsla(90, 100%, 17%, 0.8);
+	background-color: hsla(90, 100%, 80%, 0.4);
+	border-color: hsla(90, 100%, 20%, 0.4);
+}
+
+.warning {
+	background-color: hsla(23, 100%, 37%, 0.4);
+	color: hsla(23, 100%, 17%, 0.8);
+	text-shadow: 0px 0px 1px hsla(23, 100%, 17%, 0.5);
+}
+@keyframes glow {
+    0%	{color:transparent;}
+    50%	{color:hsl(292, 100%, 31%);}
+    100%	{color:transparent;}
+}
+.urlInPage::after, #bsufound::before {
+	content: "✪";
+	color: hsl(292, 100%, 31%);
+	vertical-align: super;
+}
+#bsufound::before {
+	margin: 0 0.4em 0 0;
+	font-size: 1.5em;
+	vertical-align: middle;
+}
+
+.urlInPage::after {
+	animation-name: glow;
+	animation-duration: 0.7s;
+	animation-iteration-count: infinite;
+}
+.urlInPage {
+	background-color: hsla(270,90%,80%,0.3);
+}
+
+/* Wait Icon */
+.spinner {
+	display: inline;
+  text-align: center;
+}
+
+.spinner > div {
+  display: none;
+  width: 1em;
+  height: 1em;
+  background-color: #333;
+  border-radius: 100%;
+}
+.spinner.active > div {
+  display: inline-block;
+  animation: sk-bouncedelay 1.4s infinite ease-in-out both;
+}
+
+.spinner.active .bounce1 {
+  animation-delay: -0.32s;
+}
+
+.spinner.active .bounce2 {
+  animation-delay: -0.16s;
+}
+
+@keyframes sk-bouncedelay {
+  0%, 80%, 100% { 
+    transform: scale(0);
+  } 40% { 
+    transform: scale(1.0);
+  }
+}
+
+/* Hilitor */
+.hilitor {
+	font: inherit;
+	font-color: #000;
+	text-shadow: 0.5px 0.5px 1px hsla(0, 0%, 0%, 0.3);
+}
+
+.\30 {
+	background-color: hsla(60, 90%, 85%, 0.4);
+}
+
+.\31 {
+	background-color: hsla(240, 90%, 85%, 0.4);
+}
+
+.\32 {
+	background-color: hsla(120, 90%, 85%, 0.4);
+}
+
+.\33 {
+	background-color: hsla(300, 90%, 85%, 0.4);
+}
+
+.\34 {
+	background-color: hsla(180, 90%, 85%, 0.4);
+}
+
+.\35 {
+	background-color: hsla(0, 90%, 85%, 0.4);
+}
+
+.\36 {
+	background-color: hsla(270, 90%, 85%, 0.4);
+}
+
+.\37 {
+	background-color: hsla(90, 90%, 85%, 0.4);
+}
+
+.\38 {
+	background-color: hsla(330, 90%, 85%, 0.4);
+}
+
+.\39 {
+	background-color: hsla(150, 90%, 85%, 0.4);
+}
+
+.\31\30 {
+	background-color: hsla(30, 90%, 85%, 0.4);
+}
+
+.\31\31 {
+	background-color: hsla(210, 90%, 85%, 0.4);
+}
