@@ -48,11 +48,12 @@ portBG.onMessage.addListener( (m)=> {				//console.log("Messsage from BG receive
 
 /************************************* OPTIONS ************************************
 ************************************************************************************/
-var opts = {}		//must declare if no options yet keyhigh: true
+var opts = {keyhigh:true}		//must declare if no options yet keyhigh: true
 browser.storage.local.get("keyhigh")
 	.then(
 		result => {
-			opts = result
+			opts = Object.assign(opts,result)	
+												//console.log(opts, result)
 			getSearchBox()
 		}, 
 		error => {
@@ -60,6 +61,7 @@ browser.storage.local.get("keyhigh")
 			console.error(`Error while getting your options: ${error}`)
 		}
 	)
+
 /****** VIEW PANE (including minimize and restore) + activating bookmark sidebar****
 ************************************************************************************/
 

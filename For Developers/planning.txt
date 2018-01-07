@@ -1,44 +1,61 @@
+****************** On Publish ******************************
+Comment console.log out
+Change manifest version
+Commit and push files to github
+
+
+
+****************** DONE (for release notes before publish) ******************************
+* Fixed option when options not saved once
+
+
+
+****************** BUG!!!!!!! ***********************
+
+When doing 2 searches in 2 tabs at same time, something goes wrong 
+
+Sometimes clicking on the search engine generated links doesn't do anything anymore.
+
+
+****************** TODO ******************************
 Check TODO's inline and put here
 ---------------------------------------------
-DONE: 
-* Fix error in ecosia
-* Mark keywords in different colors (optional)
 
-BUG!!!!!!!
-When doing 2 searches in 2 tabs at same time, something goes wrong
+TODO: When more options do options.js like in displayonpage
 
 TODO: Don't show viewpane if no searchterms
-	DO it via class (so we can still display messages)
-
-setup donation link on addons page
-(patreon?  or paypal? Anyway, ait until virus gone)
-
-TODO: Add button to manually activate and option for "always on this site?" and "never on this site"
+		Do it via class (so we can still display messages)
+		
+TODO: When bookmark found in search results below scrolling, show an arrow at bottom to notify user, (make it dissappear when scrolling to last)
 
 TODO: Give each engine something to speed up search, changeable in options
+		
+TODO: Add button to manually activate and option for "always on this site?" and "never on this site"
 
+TODO: when url search stops, chain is broken (use timer because t also happens elsewhere!) (see try..catch)
 
-TODO: When sarch engine doesn't refresh but uses ajax, trigger search too!
+setup donation link on addons page
+Make a page after update with release notes and donation request, just like session manager does
+(patreon?  or paypal? Anyway, ait until virus gone)
 
-TODO: When bookmark found in search results below scrolling, show an arrow at bottom to notify user
+TODO: When search engine doesn't refresh but uses ajax, trigger search too!
+
 TODO:	Find bookmarks from "searchUrls" back in myView results, color those search results very specially and put on top!
 
 TODO: Do we need to stop our chain and other searches when the page reloads while searching?
 TODO: CLeanup on port diconnect
 
-TODO: when url search stops, chain is broken (use timer!) (see try..catch)
-
-TODO: BUG!!  Sometimes clicking on the search engine generated links doesn't do anything anymore.
 
 
 TODO:
-//search engine options
+//When search engine options, how to start content sript
 /*
 browser.tabs.executeScript({file:displayOnPage.js})
 */
 
 
-*********** TO REMEMBER ***********************
-URL regex find was taken from among other things	-------->	http://benalman.com/code/test/js-linkify/		
+****************** TO REMEMBER ***********************
+URL regex find was taken from among other things	-------->	http://benalman.com/code/test/js-linkify/
+		
 If doing different kind of searches, order them by fastest first
 			

@@ -2,7 +2,6 @@
 Search, highlight and display relevant bookmarks when searching in your favorite search engine (Google only for now)
 
 Firefox listing: https://addons.mozilla.org/en-US/firefox/addon/bookmarks-in-search-engines/
-
 GitHub listing:https://github.com/e-motiv/Webextension-Bookmarks-in-search-engines
 
 ## Features
