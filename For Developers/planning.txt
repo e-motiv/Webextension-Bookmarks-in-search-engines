@@ -11,6 +11,9 @@ Put DONE below in README.md
 Url search finds non matches??
 	E.G. "javascript array copy minus element" -> www.dyn-web.com/javascript/arrays/remove.php  
 		(only domain -> maybe get another color for and another star. But then a help button is needed
+		
+Not ak keywords are always marked
+	E.g. "youtube art" -> art not marked in title (case sensitive?)
 
 Sometimes clicking on the search engine generated links doesn't do anything anymore.
 		Fixed?

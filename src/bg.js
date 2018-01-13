@@ -13,7 +13,8 @@ function optsGetAndListen() {
 		.then(optsSet, optsError)
 }
 function optsSet(result) {											//console.log("optsSet before, opts:", opts, "defaults:", defaultOpts, "result:",result)
-	if ( result && (result.keyhigh != undefined) )
+	//ALWAYS PUT LAST NEW OPTION HERE, SO OPTIONS are reset: TODO later: reset only new options!
+	if ( result && (result.hosts != undefined) )
 		opts = result
 	else
 		opts = defaultOpts
@@ -95,7 +96,7 @@ function searchBTest(tabId, bms, kws) {
 	if(bms.length>0)			// || splitIns[tabId]<1
 		searchFinished(tabId, bms)
 
-	//Start spit searching
+	//Start split searching
 	else {
 		keywords[tabId] = kws.split(/\s+/)
 		if (keywords[tabId].length<2)
@@ -127,15 +128,15 @@ function searchBSplit(tabId){									//console.log("searchBSplit", keywords[tab
 			.then(bms => searchBWaitAll(tabId, bms, kws), e => searchRejected(tabId, e))
 	})
 }
-function searchBWaitAll(tabId, bms) {								//console.log("searchBWaitAll", bms)
+function searchBWaitAll(tabId, bms) {								//console.log("searchBWaitAll", bms, bmsJoins[tabId],  splitSLefts[tabId])
 	//join results
-	bmsJoins[tabId] += bms
+	bmsJoins[tabId] = bmsJoins[tabId].concat(bms)
 	//All searches done?
 	if( !--splitSLefts[tabId]) 
-		if (bmsJoins[tabId].length) {
+		//if (bmsJoins[tabId].length) {
 			if (ports[tabId])
-				ports[tabId].postMessage({fn: "showBasicResults", bms:bms, searchType:currentSearches[tabId], split:true})
-		}
+				ports[tabId].postMessage({fn: "showBasicResults", bms:bmsJoins[tabId], searchType:currentSearches[tabId], split:true})
+		//}
 }
 
 function searchFinished(tabId, bms) {						//console.log("Bookmarks search finished",bms)

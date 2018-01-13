@@ -232,8 +232,7 @@ function showBasicResults(a) {											//console.log("showBasicResults ->",a)
 function makeHtml(bm) {														//console.log(bm.id,bm.title,bm.url )
 	let title	= bm.title.trim().length<1?"____No Title____":bm.title
 	//Mark keywords
-	if (opts.keyhigh) {
-		
+	if (opts.keyhigh) {		
 		if (temp = execReplace(title)) {				
 			title = temp
 		}
@@ -348,7 +347,7 @@ function searchNextUrlBm(start=false) {									//console.log("searchNextUrlBm",
 	}																	//console.log("request next url search", searchNextUrlBm.i, urls.length, urls[searchNextUrlBm.i])
 	portBG.postMessage({fn:"searchUrlBm", pms:urls[searchNextUrlBm.i].text, searchType:2})
 }
-function showUrlResult(a) {
+function showUrlResult(a) {											//console.log("showUrlResult", a)
 
 	if (a.bms.length > 0) {
 		urlsFound++
