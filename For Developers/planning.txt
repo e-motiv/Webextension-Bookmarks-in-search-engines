@@ -2,16 +2,9 @@
 Comment console.log out				[^/]console.log
 Change manifest version
 Commit and push files to github
-
-
+Put DONE below in README.md
 
 ****************** DONE (for release notes before publish) ******************************
-* Choose on which search engines to activate via options
-* When all keywords not found, search for one less keyword combinations
-* Shows viewpane as icon until searchbox contains > 2 characters
-* When bookmark url matches below scrolling, show a jump button at bottom
-* FIXED: default options when options not saved once
-* FIXED: When doing multiple searches in multiple tabs at same time, everything goes to last tab and previouos ones choke
 
 
 ****************** BUGS!!!!!!! ***********************

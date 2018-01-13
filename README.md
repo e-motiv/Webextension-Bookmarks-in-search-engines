@@ -10,6 +10,10 @@ GitHub listing:https://github.com/e-motiv/Webextension-Bookmarks-in-search-engin
 * Search bookmarks for same keywords in url and title 
 * Search bookmarks for exact matching urls from search engine results and highlight them
 * Mark keywords in different colors (optional)
+* Choose on which search engines to activate via options
+* When all keywords not found, search for one less keyword combinations
+* Shows viewpane as icon until searchbox contains > 2 characters
+* When bookmark url matches below scrolling, show a jump button at bottom
 
 ## Future features when addon-API "bookmarks" is good like before again
 * Show bookmark favicon
