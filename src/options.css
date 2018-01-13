@@ -1,0 +1,30 @@
+table {
+	width: 100%;
+}
+input[type=text] {
+	width:100%;
+}
+.opts th {
+	width: 10em;
+	text-align:left;
+}
+.opts td:nth-child(3) {
+	max-width: 12em;
+}
+.botrow td:first-child {
+	width: 10em;
+	text-align:right;
+}
+.botrow td:nth-child(2) {
+	background-color: hsla(240, 50%, 80%, 0.5);
+}
+
+.success {
+	color: hsla(90, 100%, 17%, 0.8);
+	background-color: hsla(90, 100%, 80%, 0.4) !important;
+}
+
+.warning {
+	background-color: hsla(23, 100%, 37%, 0.4) !important;
+	color: hsla(23, 100%, 17%, 0.8);
+}

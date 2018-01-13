@@ -1,57 +1,62 @@
 ****************** On Publish ******************************
-Comment console.log out
+Comment console.log out				[^/]console.log
 Change manifest version
 Commit and push files to github
 
 
 
 ****************** DONE (for release notes before publish) ******************************
-* Fixed option when options not saved once
+* Choose on which search engines to activate via options
+* When all keywords not found, search for one less keyword combinations
+* Shows viewpane as icon until searchbox contains > 2 characters
+* When bookmark url matches below scrolling, show a jump button at bottom
+* FIXED: default options when options not saved once
+* FIXED: When doing multiple searches in multiple tabs at same time, everything goes to last tab and previouos ones choke
 
 
-
-****************** BUG!!!!!!! ***********************
-
-When doing 2 searches in 2 tabs at same time, something goes wrong 
+****************** BUGS!!!!!!! ***********************
+Url search finds non matches??
+	E.G. "javascript array copy minus element" -> www.dyn-web.com/javascript/arrays/remove.php  
+		(only domain -> maybe get another color for and another star. But then a help button is needed
 
 Sometimes clicking on the search engine generated links doesn't do anything anymore.
+		Fixed?
 
-
-****************** TODO ******************************
-Check TODO's inline and put here
+****************** TODOS ******************************
+Check TODO's inline code and put here
 ---------------------------------------------
 
-TODO: When more options do options.js like in displayonpage
+TODO: When done for a while on this project, put the rest on site with bounties!
+---------------------------------------------
 
-TODO: Don't show viewpane if no searchterms
-		Do it via class (so we can still display messages)
-		
-TODO: When bookmark found in search results below scrolling, show an arrow at bottom to notify user, (make it dissappear when scrolling to last)
+TODO: Basic search: search with even less  keywords until results: (e.g. xxx yyy zzzz, no results, search for "xxx yyy" and "yyy zzz", no results "xxx" and "yyy" and "zzz"
+				This is very hard logic and probably not neccessary
+				
+TODO:	Find bookmarks from "searchUrls" back in myView results, color those search results very specially and put on top! If not exist put it there!
 
-TODO: Give each engine something to speed up search, changeable in options
-		
-TODO: Add button to manually activate and option for "always on this site?" and "never on this site"
-
-TODO: when url search stops, chain is broken (use timer because t also happens elsewhere!) (see try..catch)
-
-setup donation link on addons page
+TODO:
+setup donation link on addons page  (bitcoin?)
 Make a page after update with release notes and donation request, just like session manager does
 (patreon?  or paypal? Anyway, ait until virus gone)
 
 TODO: When search engine doesn't refresh but uses ajax, trigger search too!
+	Do search engines still do that? SO far not seen
 
-TODO:	Find bookmarks from "searchUrls" back in myView results, color those search results very specially and put on top!
+TODO: Do we need to stop content/bg chain and other searches when the page reloads while searching? No way to stop a promis mid-run (ecma 7 maybe)
+TODO: CLeanup more on port diconnect
 
-TODO: Do we need to stop our chain and other searches when the page reloads while searching?
-TODO: CLeanup on port diconnect
+TODO: when bg url search fails without promise filas, chain is broken (use timer because t also happens elsewhere!) (see try..catch)
+		
+TODO: Make bottom sroll arrow button dissappear when scrolled, and back when scrolled up
+
+TODO: Give each engine something to speed up search, changeable in options 
+	Trial 1: difference when block: between 3.5 en 2.2 s not worthwhile, maybe do different like class "rc" etc..
 
 
-
-TODO:
-//When search engine options, how to start content sript
-/*
-browser.tabs.executeScript({file:displayOnPage.js})
-*/
+TODO maybe: Add button to manually activate and option for "always on this site?" and "never on this site". If so, replace the current minimize function by it
+		3 states: Minimized automatically (no results) or manually minimized manually and noresults (gray?)
+		manually minimized with results (gray with star tag?)
+		not minimized (results or maximized manually) (color)
 
 
 ****************** TO REMEMBER ***********************

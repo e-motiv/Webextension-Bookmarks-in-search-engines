@@ -15,32 +15,34 @@ let waitAni 	= `
 	</span>
 `
 let myLayout	= `
-	<div id="bs-pane">
-	<a id="bs-min" href="javascript:">_</a>
-	<a id="bs-max" href="javascript:"></a>
-	<a id="bs-close" href="javascript:">X</a>
+	<div id="bs-pane" class="min">
+	<a id="bsmin" href="javascript:">_</a>
+	<a id="bsmax" href="javascript:"></a>
+	<a id="bsclose" href="javascript:">X</a>
 	<h2>
 		<a href="javascript:" id="bs-icon">&nbsp;</a>Bookmarks search 
 		<span id="bsbfound" class="info" title="Keyword search">${waitAni} <span id="bsbmsg"></span></span> 
 		<span id="bsufound" class="info" title="Search engine results match search">${waitAni} <span id="bsumsg"></span></span>
-		<span id="bstime" class="info" title="Timing results (Keyword search&#10;&#10;Search engine results&#10;Indexing - Search engine results match"></span> 
+		<span id="bstime" class="info" title="Timing results&#10;  Keywords search&#10;  URL Indexing &#10; URL Search engine results match"></span> 
 	</h2>
-	<div id="bsmsg" class="info" style="display:none"></div>
+	<div id="bsmsg" class="info hidden"></div>
 	<div id="bsresults"></div>
+	<div id="bsbelow" class="hidden"></div>
 	</div>
 `
 
 //Connect with background script and redirect
-let portBG 		= browser.runtime.connect({name:"port-from-cs"})
+let portBG 	= browser.runtime.connect()
 
-portBG.onMessage.addListener( (m)=> {				//console.log("Messsage from BG received:",m)
+portBG.onMessage.addListener( (m) => {										//console.log("Messsage from BG received:",m)
 
 	//this or eval(m.fn) instead of window[m.fn], last searches on page, not content script funtions)
 	let fn = this[m.fn]
-	if (typeof fn === "function") fn(m.pms)
-	else console.error(m.fn + " is not a function", m, typeof fn)	
 	
-	//Do Next search
+	if (typeof fn === "function") fn(m)
+	else console.error(m.fn + " is not a function", m, typeof fn)
+	
+	//Do Next search, in case of error, we put it here
 	if (m.searchType == 1)
 		searchUrls()	
 
@@ -48,19 +50,11 @@ portBG.onMessage.addListener( (m)=> {				//console.log("Messsage from BG receive
 
 /************************************* OPTIONS ************************************
 ************************************************************************************/
-var opts = {keyhigh:true}		//must declare if no options yet keyhigh: true
-browser.storage.local.get("keyhigh")
-	.then(
-		result => {
-			opts = Object.assign(opts,result)	
-												//console.log(opts, result)
-			getSearchBox()
-		}, 
-		error => {
-			msg(`Error while getting your options: ${error}`, "warning")
-			console.error(`Error while getting your options: ${error}`)
-		}
-	)
+var opts
+function setOpts(a) {												//console.log("setOpts", a, opts)
+	opts = a.opts
+	getSearchBox()
+}
 
 /****** VIEW PANE (including minimize and restore) + activating bookmark sidebar****
 ************************************************************************************/
@@ -71,24 +65,19 @@ if (!myView) {
 	myView	=	document.body.lastElementChild
 }
 
-let bWait, uWait
+let bWait, uWait, lastFUEl
 //Grab some elements
-[	"bsbfound",
-	"bsufound",
-	"bsmsg",
-	"bsbmsg",
-	"bsumsg",
-	"bstime",
-	"bsresults"
-].forEach(s=>{
-	this[s]=document.getElementById(s)
+[	"bsbfound",	"bsufound",	"bsmsg",	"bsbmsg",	"bsumsg",	"bstime",	"bsresults",	"bsbelow",	"bsmin",	"bsmax",	"bsclose" ]
+	.forEach(s=>{
+		this[s]=document.getElementById(s)
 })
 //Minimize, close etc..
 bWait	= bsbfound	.firstElementChild
 uWait	= bsufound	.firstElementChild
-document.getElementById("bs-min")	.addEventListener('click', (e)=> {myView.classList.add("hidden")}, false)
-document.getElementById("bs-max")	.addEventListener('click', (e)=> {myView.classList.remove("hidden")}, false)
-document.getElementById("bs-close")	.addEventListener('click', disable, false)
+bsmin	.addEventListener('click', (e)=> {myView.classList.add("min")}, false)
+bsmax	.addEventListener('click', (e)=> {myView.classList.remove("min")}, false)
+bsclose	.addEventListener('click', disable, false)
+bsbelow	.addEventListener('click', (e)=> {lastFUEl.scrollIntoView()}, false)
 
 
 function disable(e)  {											//console.log("Disabling content script")
@@ -108,8 +97,10 @@ function msg(t,cls) {
 
 	if(cls)
 		bsmsg.classList.add(cls)
-	bsmsg.style.display = "block"
+	bsmsg.show()
 	bsmsg.textContent	= t	
+	//Show viewpane or we can't read
+	myView.classList.remove("min")
 }
 
 /**** Grabbing SE searchbox and general searching logic ****
@@ -141,9 +132,9 @@ function delaySearch(s) {												//console.log("delaying Search, ms: ",s)
 	searchDelay = setTimeout(searchBasic, s)
 }
 
-function searchError(error, type) {
-	msg(`Bookmark search error:<br>${error}`)
-	if (type == 1) 
+function searchError(a) {
+	msg(`Bookmark search error:<br>${a.e}`)
+	if (a.searchType == 1) 
 		inProgress = false
 	else
 		//Keep URL chain going
@@ -171,12 +162,6 @@ function searchBasic(e=null) {								//console.log("searchBasic  /  event ->",e
 
 	timeB = performance.now()
     searchTerm=searchBox.value.trim()
-    
-    //Prepare regex for marking keywords
-	if (opts.keyhigh) {
-
-		KEY_RE	= new RegExp( "(" + searchTerm.replace(/\s+/g, ')|(') + ")", "ig" )
-	}
 
 	//Inverse desire, but since we don't know a way to interrupt the search, we have to wait for it, otherwise overload!
 	if (inProgress) { 										//console.log("Search in progress, inProgress: ", inProgress)
@@ -199,7 +184,14 @@ function searchBasic(e=null) {								//console.log("searchBasic  /  event ->",e
 		}
 		return
 	}
-		
+	
+	//*********** Start search************
+    
+    //Prepare regex for marking keywords
+	if (opts.keyhigh) {
+		KEY_RE	= new RegExp( "(" + searchTerm.replace(/\s+/g, ')|(') + ")", "ig" )
+	}
+	
 	lastSearch = searchTerm
 	//If endless loop, stop it! At same time set inProgress true (but only if loopSafeNet works!
 	inProgress = setTimeout(()=>{inProgress=false}, 10000)
@@ -207,23 +199,28 @@ function searchBasic(e=null) {								//console.log("searchBasic  /  event ->",e
 	bsufound.classList.remove("warning", "success")
 	//Waiting animated icon
 	bWait.classList.add("active")
+	//Show bigger pane
+	myView.classList.remove("min")
 	portBG.postMessage({fn: "searchBasic", pms:searchTerm, searchType:1})	
 }
 
-function showBasicResults(bms) {						//console.log("showBasicResults, bms:",bms)		
+function showBasicResults(a) {											//console.log("showBasicResults ->",a)		
 	
 	inProgress 	= false	
 	htmlResult	= ""
 	//Waiting animated icon
 	bWait.classList.remove("active")
-	let num		= bms.length
+	let num		= a.bms.length
 	
 	timeB = performance.now() - timeB
 	bstime.textContent = `${timeB.toFixed()} ms`
 		
 	if (num > 0) {
+		//Search was spit?
+		if (a.split)
+			msg(`Found no bookmarks with all keywords. Showing results with one less keyword combinations.`)
 		bsbfound.classList.add("success")
-		bms.forEach(makeHtml)
+		a.bms.forEach(makeHtml)
 		bsresults.replaceInner(htmlResult)
 	} else {
 		bsbfound.classList.add("warning")
@@ -277,6 +274,7 @@ let nv,
 	URI2		= "\\b" + HOST + PATH + QUERY_FRAG + "(?!\\w)",
 	URI_RE		= new RegExp( "(?:" + URI1 + "|" + URI2 + ")", "ig" ),
 	KEY_RE
+	
 
 function findUrlsInPage(node) {												//console.log("findUrlsInPage, loop:",findUrlsInPage.i++, "node:",node)
 	
@@ -330,7 +328,7 @@ function findUrlsInPage(node) {												//console.log("findUrlsInPage, loop:"
 
 }
 
-function searchNextUrlBm(start=false) {								//console.log("searchNextUrlBm", searchNextUrlBm.i, urls.length, urls[searchNextUrlBm.i])
+function searchNextUrlBm(start=false) {									//console.log("searchNextUrlBm", searchNextUrlBm.i, urls.length, urls[searchNextUrlBm.i])
 	if (start) {
 		searchNextUrlBm.i = 0
 	}
@@ -347,14 +345,21 @@ function searchNextUrlBm(start=false) {								//console.log("searchNextUrlBm", 
 		bsumsg.textContent	= `Found: ${urlsFound}`
 		bstime.textContent	+= `    -    ${timeI.toFixed()} ms - ${timeU.toFixed()} ms`
 		return
-	}																//console.log("request next url search", searchNextUrlBm.i, urls.length, urls[searchNextUrlBm.i])
+	}																	//console.log("request next url search", searchNextUrlBm.i, urls.length, urls[searchNextUrlBm.i])
 	portBG.postMessage({fn:"searchUrlBm", pms:urls[searchNextUrlBm.i].text, searchType:2})
 }
-function showUrlResult(bms) {
+function showUrlResult(a) {
 
-	if (bms.length > 0) {
+	if (a.bms.length > 0) {
 		urlsFound++
-		urls[searchNextUrlBm.i].node.classList.add("urlInPage")
+		lastFUEl	= urls[searchNextUrlBm.i].node
+		lastFUEl.classList.add("urlInPage")
+		//Check if need to be scrolled to view
+		let coords = lastFUEl.getBoundingClientRect()
+		let windowHeight = document.documentElement.clientHeight
+		//bottom visible?
+		if ( !(coords.bottom < windowHeight && coords.bottom > 0) )
+			bsbelow.show()
 		bsufound.classList.add("success")
 	}
 	searchNextUrlBm()
@@ -362,9 +367,13 @@ function showUrlResult(bms) {
 
 /********GENERAL********
 ************************/
-
+Element.prototype.show = function() {
+	this.classList.remove("hidden")
+}
 Element.prototype.replaceInner	= function (html) {
   while (this.firstChild) { this.removeChild(this.firstChild) }
   this.insertAdjacentHTML('afterbegin',html)
   return this
 }
+//So we don't get an error in bg script on executeScript. Some kind of bug?
+true

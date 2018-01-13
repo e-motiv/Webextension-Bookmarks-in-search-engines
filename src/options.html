@@ -3,25 +3,34 @@
 <html>
 <head>
 <meta charset="utf-8">
+<link rel="stylesheet" type="text/css" href="options.css">
 </head>
 
 <body>
 	<form>
 		<fieldset>
-			<table style="width: 100%">
+			<table class="opts">
 				<tr>
-					<td colspan="3" id="msg" style="text-align:center; background-color:hsla(240,50%,80%,0.5)">&nbsp;</td>
+					<th><label for="keyhigh">Highlight keywords</label></th>
+					<td><input type="checkbox" id="keyhigh" checked="checked"></td>
+					<td>Highlight keywords from searchfield in results</td>
 				</tr>
 				<tr>
-					<td><input type="checkbox" id="keyhigh" checked="checked"></td>
-					<td><label for="keyhigh">Highlight key words</label></td>
-					<td>Highlight keywords from searchfield in results</td>
+					<th><label for="hosts">Triggering hosts</label></th>
+					<td><input type="text" id="hosts"></td>
+					<td>Hosts that you want to activate bookmarks search. For format see <a href="https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/events/UrlFilter">property "hostContains"</a></td>
 				</tr>
 			</table>
 		</fieldset>
-		<div style="margin-top: 2em; text-align: center;">
-			<button type="submit">Save</button>
-		</div>
+		<table>
+			<tr class="botrow">
+				<td>
+					<button type="submit">Save</button>
+					<button id="reset">Reset</button>
+				</td>
+				<td colspan="2" id="msg">&nbsp;</td>
+			</tr>
+		</table>
 	</form>
 	<script src="options.js"></script>
 </body>

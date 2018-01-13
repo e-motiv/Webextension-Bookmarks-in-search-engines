@@ -1,7 +1,7 @@
 {
 	"manifest_version": 2,
 	"name": "Bookmarks in search engines",
-	"version": "0.3",
+	"version": "0.4",
 	"description": "Search, highlight and display relevant bookmarks when searching in your favorite search engine (Google only for now)",
 	"applications": {
 		"gecko": {
@@ -14,29 +14,8 @@
 			"bg.js"
 		]
 	},
-	"content_scripts": [
-		{
-			"matches": [
-				"*://*.google.pt/*",
-				"*://*.google.com/*",
-				"*://*.stackoverflow.com/*",
-				"*://*.dogpile.com/*",
-				"*://*.baidu.com/*",
-				"*://*.yahoo.com/*",
-				"*://*.bing.com/*",
-				"*://*.ask.com/*",
-				"*://*.ecosia.org/*"
-			],
-			"js": [
-				"displayOnPage.js"
-			],
-			"css": [
-				"displayOnPage.css"
-			]
-		}
-	],
 	"options_ui": {
 		"page": "options.html"
 	},
-	"permissions": ["storage", "bookmarks",	"activeTab"]
+	"permissions": ["<all_urls>", "storage", "bookmarks",	"activeTab", "webNavigation"] 
 }

@@ -1,36 +1,48 @@
-let msg
-function saveOptions(e) {
+let msg, bg
 	
-	e.preventDefault();
-	browser.storage.local.set({keyhigh : document.getElementById("keyhigh").checked})
-		.then(
-			() => {										//console.log(document.getElementById("keyhigh"))
-				msg.textContent = "Options successfully saved."
-			}, 
-			error => {
-				console.error(`Error: ${error}`)
-				msg.textContent = `Error while saving your options: ${error}`
-			}
-		)
-}
-
-function restoreOptions() {
+document.addEventListener("DOMContentLoaded", () => {
 
 	msg = document.getElementById("msg")
+	bg	= browser.extension.getBackgroundPage()
+	document.querySelector("form").addEventListener("submit", saveOptions)
+	document.getElementById("reset").addEventListener("click", resetOptions)
+	restoreOptions()
+})
 
-	browser.storage.local.get("keyhigh")
-		.then(
-			result => {									//console.log(result)
-				//Default
-				if (result.keyhigh === undefined) result.keyhigh = true
-				document.getElementById("keyhigh").checked = result.keyhigh
-			}, 
-			error => {
-				console.error(`Error: ${error}`)
-				msg.textContent = `Error while getting your options: ${error}`
-			}
-		)
+function restoreOptions() {												//console.log("restoreOptions", bg.opts)
+	
+	document.getElementById("keyhigh").checked	= bg.opts.keyhigh
+	document.getElementById("hosts").value		= bg.opts.hosts			
 }
+function saveOptions(e) {												//console.log("saveOptions")
+	
+	e.preventDefault();
+	storeOptions({
+		keyhigh: document.getElementById("keyhigh").checked,
+		hosts:  document.getElementById("hosts").value
+	})
+		.then(bg.optsGetAndListen, null)
+}
+function resetOptions(e) {												//console.log("resetOptions", bg.defaultOpts)
+	
+	e.preventDefault()
+	storeOptions(bg.defaultOpts)
+		.then(bg.optsSet, null)
+		.then(restoreOptions, null)		
+}
+function storeOptions(o) {												//console.log("storeOptions", o)
 
-document.addEventListener("DOMContentLoaded", restoreOptions)
-document.querySelector("form").addEventListener("submit", saveOptions)
+	return browser.storage.local.set(o)
+		.then(storeSuccess, storeFail)
+}
+function storeSuccess() {
+	
+	msg.textContent = "Options successfully saved."
+	msg.classList.add("success")
+}
+function storeFail(e) {
+	
+	console.error(`Error: ${e}`)
+	msg.textContent = `Error while saving your options: ${e}`
+	msg.classList.add("warning")
+}
