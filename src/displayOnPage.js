@@ -74,10 +74,16 @@ let bWait, uWait, lastFUEl
 //Minimize, close etc..
 bWait	= bsbfound	.firstElementChild
 uWait	= bsufound	.firstElementChild
-bsmin	.addEventListener('click', (e)=> {myView.classList.add("min")}, false)
-bsmax	.addEventListener('click', (e)=> {myView.classList.remove("min")}, false)
-bsclose	.addEventListener('click', disable, false)
-bsbelow	.addEventListener('click', (e)=> {lastFUEl.scrollIntoView()}, false)
+bsmin		.addEventListener('click', (e)=> {myView.classList.add("min")}, false)
+bsmax		.addEventListener('click', (e)=> {myView.classList.remove("min")}, false)
+bsclose		.addEventListener('click', disable, false)
+bsbelow		.addEventListener('click', (e)=> {lastFUEl.scrollIntoView()}, false)
+bsufound	.addEventListener('click', (e)=> {
+	document.body.classList.add("boom")
+	setTimeout(() => {
+		document.body.classList.remove("boom")
+	}, 500);
+	}, false)
 
 
 function disable(e)  {											//console.log("Disabling content script")
@@ -142,16 +148,15 @@ function searchError(a) {
 }
 
 function execReplace(t) {
-	if (ws = KEY_RE.exec(t)) {
-		let re = t
-		ws.forEach((w,i) => {
-			if (i==0)
-				return
-			re = re.replace(w, `<mark class="m${i}">$&</mark>`)
+	let found = false
+	let re = t.replace(KEY_RE, function(){						//console.log(arguments)
+		found = true
+		args = Array.from(arguments)
+		match = args.shift()
+		i = args.indexOf(match)
+		return `<mark class="m${i}">${match}</mark>`
 		})
-		return re
-	}
-	return false
+	return found?re:false
 }
 
 
@@ -218,13 +223,13 @@ function showBasicResults(a) {											//console.log("showBasicResults ->",a)
 	if (num > 0) {
 		//Search was spit?
 		if (a.split)
-			msg(`Found no bookmarks with all keywords. Showing results with one less keyword combinations.`)
+			msg("Found no bookmarks with all keywords. Showing results with one less keyword combinations.", 'lessterms')
 		bsbfound.classList.add("success")
 		a.bms.forEach(makeHtml)
 		bsresults.replaceInner(htmlResult)
 	} else {
 		bsbfound.classList.add("warning")
-		msg("Found no bookmarks with keywords. Showing old results.")
+		msg("No bookmarks with same keywords.")
 	}
 	bsbmsg.textContent	= "Found: " + num
 
@@ -311,7 +316,7 @@ function findUrlsInPage(node) {												//console.log("findUrlsInPage, loop:"
 		//Mark keywords
 		if ( (node.nodeType === 3) && opts.keyhigh && (temp = execReplace(nv))) {		//console.log("--found text",nv, node)
 
-			let marked = document.createElement("span")
+			let marked = node.parentNode.cloneNode(true)
 			marked.innerHTML = temp
 			//node = node.parentNode.replaceChild(node, marked)
 			node.parentNode.insertBefore(marked, node);

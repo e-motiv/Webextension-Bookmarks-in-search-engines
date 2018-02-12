@@ -13,7 +13,8 @@
 	resize: both;
 	width: auto;
 	max-width: 60em;
-	height: calc(100vh - 80px - 2em);
+	height:auto;
+	max-height: calc(100vh - 80px - 2em);
 	font-size: small;
 	font-family: arial,sans-serif;
 }
@@ -165,7 +166,7 @@
 }
 
 #bs-pane #bsresults .tags a {
-	color: hsla(267, 100%, 60%, 0.3);
+	color: hsla(267, 90%, 70%, 0.2);
 }
 
 .info {
@@ -175,13 +176,13 @@
 	border: 1px solid hsla(23, 100%, 20%, 0.4);
 	border-radius: 0.5em;
 	color: hsla(240, 100%, 17%, 0.8);
-	background-color: hsla(240, 100%, 60%, 0.3);
+	background-color: hsla(240, 90%, 70%, 0.2);
 	border-color: hsla(240, 100%, 20%, 0.4);
 }
 
 .success {
 	color: hsla(90, 100%, 17%, 0.8);
-	background-color: hsla(90, 100%, 60%, 0.3);
+	background-color: hsla(90, 90%, 70%, 0.2);
 	border-color: hsla(90, 100%, 20%, 0.4);
 }
 
@@ -190,20 +191,29 @@
 	color: hsla(23, 100%, 17%, 0.8);
 	text-shadow: 0px 0px 1px hsla(23, 100%, 17%, 0.5);
 }
-@keyframes glow {
-    0%	{color:transparent;}
-    50%	{color:hsl(292, 100%, 31%);}
-    100%	{color:transparent;}
+.lessterms {
+	background-color: hsla(260, 90%, 70%, 0.2);
 }
-.urlInPage::after, #bsufound::before, #bsbelow::before {
-	content: "✪";
-	color: hsl(292, 100%, 31%);
-	vertical-align: super;
+.lessterms::before {
+	content: "-1";
+	vertical-align: middle;
+	font-size: 1.3em;
+	font-weight: bold;
+	font-family: fantasy;
+	margin-right: 1em;
+	color: black;
+	/* border: 1px hsla(0,0%,0%,0.5) solid; */
+	border-radius: 1em;
+	padding: 0.2em;
+	box-shadow: 0 0 4px hsla(0, 0%, 0%, 1);
 }
 #bsufound::before {
 	margin: 0 0.4em 0 0;
 	font-size: 1.5em;
-	vertical-align: middle;
+	vertical-align: middle !important;
+}
+#bsufound {
+	cursor: pointer;
 }
 
 
@@ -243,45 +253,60 @@
 
 /* Highlight */
 
+@keyframes glow {
+    0%	{opacity:0}
+    50%	{opacity:1}
+    100%	{opacity:0}
+}
 .urlInPage::after, #bsufound.success::before, #bsbelow::before {
 	animation-name: glow;
 	animation-duration: 0.7s;
 	animation-iteration-count: infinite;
 }
+.urlInPage::after, #bsufound::before, #bsbelow::before {
+	content: "✪";
+	color: hsl(292, 100%, 31%);
+	vertical-align: super;
+	margin-left:0.2em;
+}
 .urlInPage {
-	background-color: hsla(270, 100%, 60%, 0.3);
+	background-color: hsla(270, 90%, 70%, 0.2);
+	transition:all 0.5s;
+}
+.boom .urlInPage {
+	background-color: hsla(0, 90%, 50%, 0.5);
 }
 mark {
 	background-color: transparent;
 }
+mark.m0 {
+	background-color: hsla(120, 100%, 50%, 0.1);
+}
+
 mark.m1 {
-	background-color: hsla(120, 100%, 60%, 0.3);
+	background-color: hsla(60, 100%, 50%, 0.1);
 }
 
 mark.m2 {
-	background-color: hsla(240, 100%, 60%, 0.3);
+	background-color: hsla(180, 100%, 50%, 0.1);
 }
 
 mark.m3 {
-	background-color: hsla(180, 100%, 60%, 0.3);
+	background-color: hsla(30, 100%, 50%, 0.1);
 }
 
 mark.m4 {
-	background-color: hsla(30, 100%, 60%, 0.3);
+	background-color: hsla(150, 100%, 50%, 0.1);
 }
 
 mark.m5 {
-	background-color: hsla(150, 100%, 60%, 0.3);
+	background-color: hsla(240, 100%, 50%, 0.1);
 }
 
 mark.m6 {
-	background-color: hsla(60, 100%, 60%, 0.3);
+	background-color: hsla(90, 100%, 50%, 0.1);
 }
 
 mark.m7 {
-	background-color: hsla(90, 100%, 60%, 0.3);
-}
-
-mark.m8 {
-	background-color: hsla(210, 100%, 60%, 0.3);
+	background-color: hsla(210, 100%, 50%, 0.1);
 }

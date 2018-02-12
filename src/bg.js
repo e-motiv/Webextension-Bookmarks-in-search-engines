@@ -37,8 +37,11 @@ function optsSet(result) {											//console.log("optsSet before, opts:", opts
 function optsError(e) {
 	console.error(`Error while getting options: ${e}`)
 }
-function tabOnCompleted(details) {										//console.log("onCompleted: ", details.url, details.tabId)
+function tabOnCompleted(details) {										//console.log("onCompleted: ", details.url, details.tabId, details)
 
+	//Don't launch on background scripts that are loaded inside a frame!	
+	if (details.frameId > 0)
+		return
 	browser.tabs.insertCSS(details.tabId, 		{file: "displayOnPage.css"	})
   		.then(null, e=>{console.error(`Insert CSS: ${e}`)})
   	browser.tabs.executeScript(details.tabId,	{file: "displayOnPage.js"	})
