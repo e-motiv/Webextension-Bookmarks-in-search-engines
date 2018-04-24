@@ -6,19 +6,78 @@
 <link rel="stylesheet" type="text/css" href="options.css">
 </head>
 
-<body>
+<body data-tab="dom">
 	<form>
 		<fieldset>
 			<table class="opts">
 				<tr>
-					<th><label for="keyhigh">Highlight keywords</label></th>
-					<td><input type="checkbox" id="keyhigh" checked="checked"></td>
-					<td>Highlight keywords from searchfield in results</td>
+					<td colspan="2">
+						<div class="align">
+								<input type="checkbox" id="keyhigh" checked="checked">
+								<label for="keyhigh">Highlight keywords</label></li>
+								<p>Highlight keywords from searchfield in results</p></li>
+						</div>						
+						</td>
 				</tr>
 				<tr>
-					<th><label for="hosts">Triggering hosts</label></th>
-					<td><input type="text" id="hosts"></td>
-					<td>Hosts that you want to activate bookmarks search. For format see <a href="https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/events/UrlFilter">property "hostContains"</a></td>
+					<th colspan="2"><p>Filters <small>When to activate (whitelist) or overrule (blacklist). Top lowest priority. <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions"target="_blank">Regular expressions</a> allowed.</small></p></th>
+				</tr>
+				<tr>
+				<th id="list">
+						<ul>
+							<li aria-selected="true">Whitelist domains</li>
+							<li>Whitelist subdomains</li>
+							<li>Whitelist URLS</li>
+							<li>Blacklist subdomains</li>
+							<li>Blacklist URLS</li>
+						</ul>
+					</th>
+					<td id="filter">
+						<div id="dom">
+							<div class="section">
+								<input placeholder='e.g. "example.com" or just "example"' type="text">
+								<button>Add domain<br>to include</button>
+							</div>
+							<ul class="empty">
+								<template>
+									<label class="display"></label>
+									<button title="remove"></button>
+								</template>
+							</ul>
+						</div>
+						<div id="sub">
+							<div class="section">
+								<input placeholder="e.g. www.example.com" type="text">
+								<button>Add subdomain<br>to include</button>
+							</div>
+							<ul class="empty">
+							</ul>
+						</div>
+						<div id="url">
+							<div class="section">
+								<input placeholder="e.g. www.example.com/example" type="text">
+								<button>Add url<br>to include</button>
+							</div>
+							<ul class="empty">
+							</ul>
+						</div>
+						<div id="xsub">
+							<div class="section">
+								<input placeholder="e.g. www.example.com" type="text">
+								<button>Add subdomain<br>to exclude</button>
+							</div>
+							<ul class="empty">
+							</ul>
+						</div>
+						<div id="xurl">
+							<div class="section">
+								<input placeholder="e.g. www.example.com/example" type="text">
+								<button>Add url<br>to exclude</button>
+							</div>
+							<ul class="empty">
+							</ul>
+						</div>
+					</td>
 				</tr>
 			</table>
 		</fieldset>
@@ -26,9 +85,9 @@
 			<tr class="botrow">
 				<td>
 					<button type="submit">Save</button>
-					<button id="reset">Reset</button>
+					<button id="reset">Reset to defaults</button>
+					<div id="msg">&nbsp;</div>
 				</td>
-				<td colspan="2" id="msg">&nbsp;</td>
 			</tr>
 		</table>
 	</form>

@@ -1,61 +1,68 @@
 ****************** On Publish ******************************
-Comment console.log out				[^/]console.log
+Comment console.log out				([^/;])([;]*)console.log => $1//$2console.log
 Change manifest version
 Publish on Firefox site
-Commit and push files to github
 Put DONE below in README.md
+Commit and push files to github
 Update in Firefox via "update addons"
 
-****************** DONE (for release notes before publish) ******************************
+****************** DONE (for release notes before publish and some things into features of description) ******************************
+
+Check comment: https://addons.mozilla.org/en-US/firefox/addon/bookmarks-in-search-engines/reviews/1061000
+Activate manually - but how
 
 
 ****************** BUGS!!!!!!! ***********************
+
 Sometimes clicking on the search engine generated links doesn't do anything anymore.
 		Fixed? Not experienced for a long time.
-
-****************** TODOS ******************************
-Check TODO's inline code and put here
----------------------------------------------
-TODO: When done for a while on this project, put the rest on site with bounties!
----------------------------------------------
-
-TODO: Give seperate indications for in page url find when whole url or just domain! another color and another star
-		CAn't make it happen to program. Need searchterms that trigger this. Possible not happening and url does exists in bookmarks!
 		
-TODO:	Find bookmarks from "searchUrls" back in myView results, color those search results very specially and put on top! If not exist put it there!
+		Makes sure subdomain tests subdomein only and not the whole url!! Could be word in path!!
+		TODO: "give me hope" on ecosia finds urls domains without actually being results, so distinguis between domain and url find???? or what am i missing here? 
+		BUT not on google!!   Hmmm?
+		
+		boom effect not working anymore??
+		
+****************** TODOS ******************************
+
+Check TODO's inline code and put here
+-------------------------------------------------------
+
+ONCE: when bg url search fails without promise filas, chain is broken (use timer because t also happens elsewhere!) (see try..catch)
+		
+ONCE: Make bottom sroll arrow button dissappear when scrolled, and back when scrolled up
+
+ONCE: Give each engine something to speed up search, changeable in options 
+	Trial 1: difference when block: between 3.5 en 2.2 s not worthwhile, maybe do different like class "rc" etc..
+		
+ONCE: Custom colors
+		
+MAYBE:	Find bookmarks from "searchUrls" back in myView results, color those search results very specially and put on top! If not exist put it there!
 	IS this really necessary? As long as we can't edit the bookmark, we just trust the addon and find the info in the engine results
 
-TODO: Basic search: search with even less  keywords until results: (e.g. xxx yyy zzzz, no results, search for "xxx yyy" and "yyy zzz", no results "xxx" and "yyy" and "zzz"
-	This is very hard logic and probably not neccessary. For now, just one less keyword.
-				
+MAYBE: When search engine doesn't refresh but uses ajax, trigger search too!
+	Do search engines still do that? SO far not seen
 
-TODO:
+TODO: Give seperate indications for in page url find when whole url or just domain! another color and another star
+		CAn't reproduce. Need searchterms that trigger this. Possible not happening and url does exists in bookmarks!
+				
+WHEN ADDON MORE POPULAR:
+-- 
 setup donation link on addons page  (bitcoin?) - when firefox addons downloads start to rise only; don't wast your time!
 Make a page after update with release notes and donation request, just like session manager does
 (patreon?  or paypal? Anyway, ait until virus gone)
+--
+Put TODO's on a site with bounties!
 
-TODO: When search engine doesn't refresh but uses ajax, trigger search too!
-	Do search engines still do that? SO far not seen
-
-TODO: Do we need to stop content/bg chain and other searches when the page reloads while searching? No way to stop a promis mid-run (ecma 7 maybe)
-TODO: CLeanup more on port diconnect
-
-TODO: when bg url search fails without promise filas, chain is broken (use timer because t also happens elsewhere!) (see try..catch)
-		
-TODO: Make bottom sroll arrow button dissappear when scrolled, and back when scrolled up
-
-TODO: Give each engine something to speed up search, changeable in options 
-	Trial 1: difference when block: between 3.5 en 2.2 s not worthwhile, maybe do different like class "rc" etc..
-
-
-TODO maybe: Add button to manually activate and option for "always on this site?" and "never on this site". If so, replace the current minimize function by it
-		3 states: Minimized automatically (no results) or manually minimized manually and noresults (gray?)
-		manually minimized with results (gray with star tag?)
-		not minimized (results or maximized manually) (color)
+NOT NOW: Basic search: search with even less  keywords until results: (e.g. xxx yyy zzzz, no results, search for "xxx yyy" and "yyy zzz", no results "xxx" and "yyy" and "zzz"
+	This is very hard logic and probably not neccessary. For now, just one less keyword.
 
 
 ****************** TO REMEMBER ***********************
 URL regex find was taken from among other things	-------->	http://benalman.com/code/test/js-linkify/
 		
 If doing different kind of searches, order them by fastest searches first
-			
+
+
+Fixed: Marked keywords font color not set by search engines
+(keep this comment in "take decisions / to remember")

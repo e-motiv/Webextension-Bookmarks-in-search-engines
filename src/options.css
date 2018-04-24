@@ -1,24 +1,165 @@
+body {
+	font-family: "Lucida Sans Unicode", sans-serif;
+	font-size: 1.2em;
+	color: hsla(0, 0%, 30%, 0.8);
+}
+fieldset {
+	background-color: hsl(245, 70%, 95%);
+	border: none;
+}
 table {
 	width: 100%;
+	border-collapse: collapse;
+}
+input {
+	padding: 0.5em 1em;
+	border: 2px solid hsl(195, 91%, 33%);
+
 }
 input[type=text] {
-	width:100%;
+	font-size: 130%;
+}
+[type=checkbox] {
+	transform: scale(1.3);
+}
+button {
+	margin:0 1em;
+	background-color: hsl(195, 91%, 33%);
+	color: white;
+	text-align: center;
+	border: none;
+	cursor: pointer;
+	/*! min-height: 3.3em; */
+}
+.align {
+	padding-left: 2.5em;
+	position:relative;
+}
+.align :not(input) {
+	margin:0.3em;
+	padding:0;
+}
+.align input {
+	position:absolute;
+	left:0;
+	/*! padding: 0; */
+}
+.opts tr:first-child {
+	border-bottom: 1px solid hsla(0, 0%, 66.7%, 0.7);
+}
+.opts tr > :first-child > :first-child {
+	margin-left: 1rem;
 }
 .opts th {
-	width: 10em;
-	text-align:left;
+	width: auto;
+	text-align: left;
+	font-weight: bold;
+	font-size: 1.1em;
+	vertical-align: top;
 }
-.opts td:nth-child(3) {
-	max-width: 12em;
+.opts small {
+	margin-left: 2em;
+	font-weight: normal;
 }
-.botrow td:first-child {
-	width: 10em;
-	text-align:right;
+#list ul {
+	margin: 0;
+	padding: 0;
 }
-.botrow td:nth-child(2) {
-	background-color: hsla(240, 50%, 80%, 0.5);
+#list th {padding:0;
+}
+#list li {
+	list-style: none;
+	display: flex;
+	padding: 1em 1rem;
+	cursor: pointer;
+	/*! border: 1px solid hsla(0, 0%, 66.7%, 0.7); */
+	margin-top:-1px;
+	border-left: none;
+	white-space: nowrap;
+}
+#list li[aria-selected] {
+	background-color: hsl(245, 80%, 97%);
+	border-right: none;
+	font-weight: bold;
+	-moz-margin-end: -1px;
 }
 
+#filter {
+	background-color: hsl(245, 80%, 97%);
+	width: 100%;
+	border-left: none;
+}
+
+#filter > div {
+	display: none;
+	height: auto;
+}
+#filter .section {
+	display: flex;
+	padding: 1.4em 2em;
+}
+#filter input {
+	flex:1;
+}
+#filter ul {
+	padding: 0;	
+}
+ul.empty::before {
+	content:"No rules";
+	padding: 0.5em 1em;
+}
+#filter li {
+	display: flex;
+	list-style: none;
+  border-bottom: 1px solid hsl(0, 0%, 80%);
+	padding: 0.5em 1em;
+}
+#filter li.new {
+	animation: 2s newGreen;
+}
+@keyframes newGreen {
+  from {
+    background-color: hsla(120, 100%, 50%, 0.2);
+  }
+
+  to {
+    background-color: transparent;
+  }
+}
+#filter li:first-of-type {
+  border-top: 1px solid #ccc;
+}
+#filter li label {
+	flex:1;
+}
+#filter li button {
+	background:transparent url(trash.svg) no-repeat;
+}
+
+body[data-tab="dom"] #dom,
+body[data-tab="sub"] #sub,
+body[data-tab="url"] #url,
+body[data-tab="xsub"] #xsub,
+body[data-tab="xurl"] #xurl {
+	display: block;
+}
+
+.botrow td button {
+	min-height: 3.3rem;
+}
+.botrow td {
+	background-color: hsla(240, 50%, 80%, 0.5);
+	align-items: center;
+	display: flex;
+	padding: 1rem;
+}
+#msg {
+	width: 100%;
+	height: 3.3rem;
+	vertical-align: middle;
+	line-height: 3.3rem;
+	padding: 0 1rem;
+}
 .success {
 	color: hsla(90, 100%, 17%, 0.8);
 	background-color: hsla(90, 100%, 80%, 0.4) !important;

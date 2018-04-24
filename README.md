@@ -5,13 +5,15 @@ Firefox listing: https://addons.mozilla.org/en-US/firefox/addon/bookmarks-in-sea
 GitHub listing:https://github.com/e-motiv/Webextension-Bookmarks-in-search-engines
 
 ## Features
-* Choose on which search engines to activate via options
-* Default search engines:google.pt, google.com, stackoverflow.com, dogpile.com, baidu.com, yahoo.com, bing.com, ask.com, ecosia.org
 * Display bookmarks results on the search engine page
+* Options of filtering: excluding or including URLs, subdomains, domains or tab
+* Add-on button allowing above options on current web page
+* Default search engines:google.pt, google.com, stackoverflow.com, dogpile.com, baidu.com, yahoo.com, bing.com, ask.com, ecosia.org
 * Shows viewpane as icon until searchbox contains > 2 characters
 * Search bookmarks for same keywords in url and title 
-* When all keywords not found, search for one less keyword combinations
+* When all keywords not found, search for one less keyword combination (marked with different icon)
 * Search bookmarks for exact matching urls from search engine results and highlight them
+* Clicking on "Found" shortly highlights them even more
 * When bookmark url matches below scrolling, show a jump button at bottom
 * Mark keywords in different colors (optional)
 

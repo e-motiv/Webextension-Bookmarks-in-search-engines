@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" type="text/css" href="popup.css">
+<script src="popup.js"></script>
+</head>
+<body tabindex="1">
+
+	<div id="notification" hidden>
+		<div id="notification-content">
+			<h1>
+				<span id="notification-title"></span> <span id="notification-close"></span>
+			</h1>
+			<p id="notification-message"></p>
+		</div>
+		<ul id="notification-close-content">
+			<li id="notification-hide">Hide</li>
+			<li id="notification-optout">Opt out</li>
+		</ul>
+	</div>
+	
+	<h4>Bookmarks in search engines</h4>
+
+	<ul id="menu">
+		<li data-ftype="tab" role="switch"><span><strong></strong> on this tab</span></li>
+		<li data-ftype="url" role="switch"><span><strong></strong> on this url</span></li>
+		<li data-ftype="sub" role="switch"><span><strong></strong> on this subdomain</span></li>
+		<li data-ftype="dom" role="switch"><span><strong></strong> on this domain</span></li>
+
+		<li id="report" class="borderX" role="button"><span>Report issue</span></li>
+		<li id="options" role="button"><span>Options</span></li>
+	</ul>
+
+
+</body>
+</html>

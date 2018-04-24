@@ -1,29 +1,3 @@
-#bs-pane {
-	box-sizing: border-box;
-	position: fixed;
-	top: 80px;
-	right: 0;
-	z-index: 9000;
-	margin: 1em;
-	padding: 1.5em;
-	overflow: auto;
-	background-color: hsl(245, 100%, 89%);
-	box-shadow: -0.4em 0.4em 0.8em 0.2em;
-	border-radius: 5px;
-	resize: both;
-	width: auto;
-	max-width: 60em;
-	height:auto;
-	max-height: calc(100vh - 80px - 2em);
-	font-size: small;
-	font-family: arial,sans-serif;
-}
-
-/* Inactive panel*/
-
-.hidden, #bs-pane #bsmax, #bs-pane.min * {
-	display: none;
-}
 /* Arrow below scroll */
 
 #bsbelow {
@@ -47,6 +21,41 @@
 	border-left: 10px solid transparent;
 	border-right: 10px solid transparent;
 }
+/* myView */
+#bs-pane {
+	box-sizing: border-box;
+	position: fixed;
+	top: 80px;
+	right: 0;
+	z-index: 9000;
+	margin: 1em;
+	padding: 25px;
+	overflow: auto;
+	background-color: hsl(245, 80%, 95%);
+	box-shadow: -0.4em 0.4em 0.8em 0.2em;
+	border-radius: 5px;
+	resize: both;
+	width: auto;
+	max-width: 60em;
+	height:auto;
+	max-height: calc(100vh - 80px - 2em);
+	font-size: small;
+	font-family: arial,sans-serif;
+}
+
+/* Inactive panel*/
+
+#bs-pane #bsmax, #bs-pane.min * {
+	display: none;
+}
+#bs-pane #bs-icon {
+	background: transparent url("/search-bookmarked32.png") center 20% no-repeat;
+	width: 1.5em;
+	height: 1.5em;
+	float: left;
+	margin: 0.5ex;
+	background-size: contain;
+}
 
 /* Minimize etc*/
 #bs-pane.min {
@@ -56,10 +65,12 @@
 	position: fixed;
 	top: 0;
 	right: 0;
+	padding: 5px;
+	resize: none;
 }
 #bs-pane.min #bsmax {
 	display: block;
-	background: transparent url("chrome://browser/skin/places/allBookmarks.png") center no-repeat;
+	background: transparent url("/search-bookmarked32.png") center no-repeat;
 	background-size: 24px 24px;
 	top: 50%;
 	left: 50%;
@@ -97,19 +108,9 @@
 	right: 12px;
 	background: rgba(183, 0, 0, 0.6);
 }
-
-#bs-pane #bs-icon {
-	background: transparent url("chrome://browser/skin/places/allBookmarks.png") center 20% no-repeat;
-	width: 1em;
-	height: 1em;
-	float: left;
-	padding: 0.5ex;
-	background-size: 1em 1em;
-}
-
-
 #bs-pane h2 {
-	margin-top: 0;
+	margin: 0;
+	line-height: 2em;
 }
 
 #bs-pane h2 .info {
@@ -278,35 +279,37 @@
 }
 mark {
 	background-color: transparent;
+	color:inherit; /*when style overriden!*/
 }
+/*yellow*/
 mark.m0 {
-	background-color: hsla(120, 100%, 50%, 0.1);
+	background-color: hsla(60, 100%, 50%, 0.4);
 }
-
+/*green*/
 mark.m1 {
-	background-color: hsla(60, 100%, 50%, 0.1);
+	background-color: hsla(120, 100%, 50%, 0.2);
 }
-
+/*orange*/
 mark.m2 {
-	background-color: hsla(180, 100%, 50%, 0.1);
+	background-color: hsla(30, 100%, 50%, 0.2);
 }
-
+/*blue*/
 mark.m3 {
-	background-color: hsla(30, 100%, 50%, 0.1);
-}
-
-mark.m4 {
-	background-color: hsla(150, 100%, 50%, 0.1);
-}
-
-mark.m5 {
 	background-color: hsla(240, 100%, 50%, 0.1);
 }
-
-mark.m6 {
-	background-color: hsla(90, 100%, 50%, 0.1);
+/*Cyan*/
+mark.m4 {
+	background-color: hsla(300, 100%, 50%, 0.1);
 }
-
+/*magenta*/
+mark.m5 {
+	background-color: hsla(180, 100%, 50%, 0.2);
+}
+/*pink*/
+mark.m6 {
+	background-color: hsla(0, 100%, 50%, 0.1);
+}
+/*purple*/
 mark.m7 {
-	background-color: hsla(210, 100%, 50%, 0.1);
+	background-color: hsla(270, 100%, 50%, 0.1);
 }
