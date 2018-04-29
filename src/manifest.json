@@ -1,7 +1,7 @@
 {
 	"manifest_version": 2,
 	"name": "Bookmarks in search engines",
-	"version": "1.0b",
+	"version": "1.0.1b",
 	"description": "Search, highlight and display relevant bookmarks when searching in your favorite search engine (Google only for now)",
 	"applications": {
 		"gecko": {

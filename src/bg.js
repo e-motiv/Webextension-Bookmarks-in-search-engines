@@ -72,7 +72,7 @@ function navCompleted(o) {
 	browser.tabs.get(o.tabId, t=>{												//console.log("navCompleted: ", o, t)
 		if (myTabs.has(t.id)) {
 			t = myTabs.get(t.id)
-			t.url = o.url
+			t.refresh(o.url)
 		}
 		else
 			t = tabInit(t)
@@ -124,9 +124,12 @@ function tabFinish(id) {													//console.log("tabFinish",id)
 class myTab {
 	constructor(tab) {
 		this.id 		= tab.id
-		this.url		= tab.url
-		this.CSEnabled	= false
-		
+		this.refresh(tab.url)
+	}
+	
+	refresh(u) {
+		this.url		= u
+		this.CSEnabled	= false		
 		this.filtersResolve()
 	}
 
