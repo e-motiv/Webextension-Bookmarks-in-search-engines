@@ -8,7 +8,7 @@ GitHub listing:https://github.com/e-motiv/Webextension-Bookmarks-in-search-engin
 * Display bookmarks results on the search engine page
 * Options of filtering: excluding or including URLs, subdomains, domains or tab
 * Add-on button allowing above options on current web page
-* Default search engines:google.pt, google.com, stackoverflow.com, dogpile.com, baidu.com, yahoo.com, bing.com, ask.com, ecosia.org
+* Default search engines:google, stackoverflow, dogpile, baidu, yahoo, bing, ask, ecosia
 * Shows viewpane as icon until searchbox contains > 2 characters
 * Search bookmarks for same keywords in url and title 
 * When all keywords not found, search for one less keyword combination (marked with different icon)
@@ -16,6 +16,7 @@ GitHub listing:https://github.com/e-motiv/Webextension-Bookmarks-in-search-engin
 * Clicking on "Found" shortly highlights them even more
 * When bookmark url matches below scrolling, show a jump button at bottom
 * Mark keywords in different colors (optional)
+* Show only small window with icons (minimize)
 
 ## Future features when addon-API "bookmarks" is good like before again
 * Show bookmark favicon
@@ -24,4 +25,4 @@ GitHub listing:https://github.com/e-motiv/Webextension-Bookmarks-in-search-engin
 * Search bookmark description
 * Open Bookmarks Sidebar when clicking bookmarks
 * Open edit dialog to edit bookmark
-* Search similar (=not exact) urls
+* Search similar (=not exact) urls (possibly domains only) (whenever webextensions API will allow it)

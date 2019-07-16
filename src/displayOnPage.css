@@ -12,73 +12,95 @@
 	font-size: 20px;
 	cursor:	pointer;
 }
-#bsbelow::after {
-	content: "";
-	position: absolute;
-	top: 100%;
-	left: 0;
-	border-top: 20px solid hsla(270, 100%, 50%, 0.3);
-	border-left: 10px solid transparent;
-	border-right: 10px solid transparent;
+body {
+	position: relative;
+	top: 2em;
 }
+
+#bstoolbar {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100vw;
+	height: 1em;
+	background-color: white;
+	z-index: 1000;
+	padding: 0.5em;
+	box-shadow: 0px 0px 3px black;
+}
+#bstoolbar > span {
+	cursor: pointer;
+	padding: 0.2em 0.5em;
+	margin: 0 0.5em;
+}
+
+
+#bstoolbar {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100vw;
+}
+
 /* myView */
 #bs-pane {
 	box-sizing: border-box;
-	position: fixed;
+	position: absolute;
 	top: 80px;
 	right: 0;
 	z-index: 9000;
-	margin: 1em;
-	padding: 25px;
-	overflow: auto;
-	background-color: hsl(245, 80%, 95%);
-	box-shadow: -0.4em 0.4em 0.8em 0.2em;
+	background-color: hsl(0, 0%, 100%);
+	box-shadow: -0.3em 0.3em 0.5em;
 	border-radius: 5px;
-	resize: both;
-	width: auto;
-	max-width: 60em;
-	height:auto;
-	max-height: calc(100vh - 80px - 2em);
+	max-width: 50vw;
 	font-size: small;
 	font-family: arial,sans-serif;
+	max-height: calc(100% - 80px);
+	overflow: hidden scroll;
 }
 
-/* Inactive panel*/
+#bs-pane:not(.min) {
+	min-width: 30em;	
+}
 
-#bs-pane #bsmax, #bs-pane.min * {
+#bs-pane #bs-icon {
+	background: transparent url("/search-bookmarked32.png") center no-repeat;
+	width: 2em;
+	height: 2em;
+	margin-right: 2em;
+	background-size: contain;
+}
+/* Minimized panel*/
+
+#bs-pane.min > :not(#flextitle), .min #flextitle h2, .min #bstime, .min #bsmin, .min #bsmsg, #bsmax {
 	display: none;
 }
-#bs-pane #bs-icon {
-	background: transparent url("/search-bookmarked32.png") center 20% no-repeat;
-	width: 1.5em;
-	height: 1.5em;
-	float: left;
-	margin: 0.5ex;
-	background-size: contain;
+#bs-pane.min {
+	display: flex;
+	position: fixed;
+	top: 50vh;
+	padding: 0;
+	margin: 0;
+	/*below for when manually rezized*/
+	width: auto !important;
+	height: auto !important;
+	resize: none;
+	align-items: stretch;
+}
+#bs-pane.min #bsmax{
+	display: flex;
+	align-items: center;
+	font-size: 1.2em;
+	padding: 0.5em;
+	cursor: pointer;
+}
+#bs-pane.min #bsmax:hover {
+	background: #0000006e;
 }
 
 /* Minimize etc*/
-#bs-pane.min {
-	height: 30px;
-	width: 30px;
-	overflow: hidden;
-	position: fixed;
-	top: 0;
-	right: 0;
-	padding: 5px;
-	resize: none;
-}
-#bs-pane.min #bsmax {
-	display: block;
-	background: transparent url("/search-bookmarked32.png") center no-repeat;
-	background-size: 24px 24px;
-	top: 50%;
-	left: 50%;
-	transform: translate(-50%, -50%);
-	background-size: 24px 24px;
-}
 
-#bs-pane #bsmin, #bs-pane #bsmax, #bs-pane #bsclose {
+#bs-pane #bsmin, #bs-pane #bsclose {
 	position: absolute;
 	box-sizing: border-box;
 	width: 20px;
@@ -87,49 +109,93 @@
 }
 #bs-pane #bsmin, #bs-pane #bsclose {
 	top: 0.3em;
-	border: 1px solid hsla(0, 0%, 50%, 0.5);
 	border-radius: 5px;
-	box-shadow: 0px 0px 2px hsl(0, 0%, 50.2%) inset;
 	text-align: center;
-	line-height: 15px;
+	line-height: 18px;
 	padding: 0.1em;
 	font-weight: bold;
+	vertical-align: middle;
 }
 #bs-pane #bsmin:hover, #bs-pane #bsclose:hover {
 	text-decoration: none;
-	background: white;
+	background: rgba(183, 0, 0, 0.6);
 }
 #bs-pane #bsmin {
-	right: 36px;
+	right: 1.5em;
 	background: transparent;
 }
 
 #bs-pane #bsclose {
-	right: 12px;
-	background: rgba(183, 0, 0, 0.6);
+	right: 0.2em;
 }
+#flextitle {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	margin-bottom: 1em;
+}
+
+#bs-pane:not(.min) #flextitle {
+	position: fixed;
+	right: 0;
+	background: white;
+	padding: 1.5em 1em 1em 0em;
+	border: 1px solid #00000021;
+}
+
+.min #flextitle {
+	flex-direction: column;
+	align-items: stretch;
+}
+.min #flextitle .info {
+	margin:1em 0.8em 0.2em 0.2em;
+	padding: 0.5em 1em; 
+}
+.min #flextitle #bs-icon {
+	margin:0.5em 0.2em 0.2em 0.2em;
+	align-self: center;
+}
+
 #bs-pane h2 {
 	margin: 0;
 	line-height: 2em;
+	flex-grow: 3;
 }
 
-#bs-pane h2 .info {
-	font-size: 50%;
-	margin-left: 2em;
-	vertical-align: middle;
+#flextitle > * {
+	margin-left: 1em;
+}
+#flextitle .info {
+	flex-grow: 1;
+	padding: 0.3em 1em;
+}
+#bs-pane #bstime:hover {
+	font-size: 150%;
+	position: absolute;
+	right: 0;
+	background: white;
+	z-index: 99999999;
+	color: black;
 }
 #bs-pane #bstime {
-	opacity: 0.4;
+	border: none;
+	color: #0000002b;
+	font-size: 60%;
+	margin-left: 4em;
+	text-align: right;
 }
 #bs-pane #bsmsg {
 	margin:1em;
 }
 
+#bs-pane #bsbelowtit {
+	margin-top: 6.5em;
+}
+
 #bs-pane #bsresults {
-	overflow-x: hidden;
-	overflow-y: auto;
-	max-height: calc(100% - 4em);
 	box-sizing: border-box;
+	height: inherit;
+	padding: 2em;
 }
 #bs-pane h3 {
 	font-size: 130%;
@@ -142,15 +208,25 @@
 }
 
 #bs-pane a:hover {
-	text-decoration: underline;
+	text-decoration: none;
 }
 
 #bs-pane #bsresults>div {
 	margin-bottom: 1.5em;
 }
+#bs-pane #bsresults h3, #bs-pane #bsresults cite {
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	overflow-x: hidden;
+	display: block;
+	cursor: pointer;
+}
+#bs-pane #bsresults h3:hover, #bs-pane #bsresults cite:hover {
+	white-space: normal;
+	overflow-x: visible;
+}
 
 #bs-pane #bsresults cite {
-	white-space: nowrap;
 	color: hsl(139.4, 100%, 20%);
 	font-style: normal;
 }
@@ -171,9 +247,7 @@
 }
 
 .info {
-	font-size: 70%;
 	text-align: center;
-	padding: 0.5em 1em;
 	border: 1px solid hsla(23, 100%, 20%, 0.4);
 	border-radius: 0.5em;
 	color: hsla(240, 100%, 17%, 0.8);
@@ -187,15 +261,18 @@
 	border-color: hsla(90, 100%, 20%, 0.4);
 }
 
+.halfsuccess {
+	color: hsla(40, 100%, 17.1%, 0.8);
+	background-color: hsla(40, 90%, 70%, 0.2);
+	border-color: hsla(40, 100%, 20%, 0.4);
+}
 .warning {
 	background-color: hsla(23, 100%, 37%, 0.4);
 	color: hsla(23, 100%, 17%, 0.8);
 	text-shadow: 0px 0px 1px hsla(23, 100%, 17%, 0.5);
 }
-.lessterms {
-	background-color: hsla(260, 90%, 70%, 0.2);
-}
-.lessterms::before {
+
+#bsmsg.halfsuccess::before {
 	content: "-1";
 	vertical-align: middle;
 	font-size: 1.3em;
@@ -208,7 +285,12 @@
 	padding: 0.2em;
 	box-shadow: 0 0 4px hsla(0, 0%, 0%, 1);
 }
-#bsufound::before {
+
+#bsbfound::before {
+	content: "✪";
+	color: hsl(244, 100%, 31%);
+}
+#bsufound::before, #bsbfound::before {
 	margin: 0 0.4em 0 0;
 	font-size: 1.5em;
 	vertical-align: middle !important;
@@ -230,6 +312,7 @@
   height: 1em;
   background-color: #333;
   border-radius: 100%;
+  vertical-align: middle;
 }
 .spinner.active > div {
   display: inline-block;
@@ -267,8 +350,6 @@
 .urlInPage::after, #bsufound::before, #bsbelow::before {
 	content: "✪";
 	color: hsl(292, 100%, 31%);
-	vertical-align: super;
-	margin-left:0.2em;
 }
 .urlInPage {
 	background-color: hsla(270, 90%, 70%, 0.2);
@@ -280,36 +361,40 @@
 mark {
 	background-color: transparent;
 	color:inherit; /*when style overriden!*/
+	transition:all 1s;
+}
+mark.boom {
+	background-color: hsla(0, 100%, 50%, 0.8) !important;
 }
 /*yellow*/
-mark.m0 {
+mark.m0, #bstoolbar :nth-child(1) {
 	background-color: hsla(60, 100%, 50%, 0.4);
 }
 /*green*/
-mark.m1 {
+mark.m1, #bstoolbar :nth-child(2) {
 	background-color: hsla(120, 100%, 50%, 0.2);
 }
 /*orange*/
-mark.m2 {
+mark.m2, #bstoolbar :nth-child(3) {
 	background-color: hsla(30, 100%, 50%, 0.2);
 }
 /*blue*/
-mark.m3 {
+mark.m3, #bstoolbar :nth-child(4) {
 	background-color: hsla(240, 100%, 50%, 0.1);
 }
 /*Cyan*/
-mark.m4 {
+mark.m4, #bstoolbar :nth-child(5) {
 	background-color: hsla(300, 100%, 50%, 0.1);
 }
 /*magenta*/
-mark.m5 {
+mark.m5, #bstoolbar :nth-child(6) {
 	background-color: hsla(180, 100%, 50%, 0.2);
 }
 /*pink*/
-mark.m6 {
+mark.m6, #bstoolbar :nth-child(7) {
 	background-color: hsla(0, 100%, 50%, 0.1);
 }
 /*purple*/
-mark.m7 {
+mark.m7, #bstoolbar :nth-child(8) {
 	background-color: hsla(270, 100%, 50%, 0.1);
 }

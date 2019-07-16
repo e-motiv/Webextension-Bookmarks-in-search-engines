@@ -1,32 +1,58 @@
 ****************** On Publish ******************************
 Comment console.log out				([^/;])([;]*)console.log => $1//$2console.log
 Change manifest version
-Publish on Firefox site
 Put DONE below in README.md
+build
 Commit and push files to github
+Convert description md to html. (Use existing html)
 Update in Firefox via "update addons"
 
 ****************** DONE (for release notes before publish and some things into features of description) ******************************
 
-Check comment: https://addons.mozilla.org/en-US/firefox/addon/bookmarks-in-search-engines/reviews/1061000
-Activate manually - but how
+**You have to reset to default options to be able to remember the minimize function. I am sorry.**
+
+Default options changed: 
+  - Only searches in exact google url now (www.google.com/search) and not other google sites
+  - Included Pocket as search engine (app.getpocket.com/search)
+Fixed: Domain, SUbdomain and url filters work on whole url and not on their parts
+
+The results pane now minimizes at the right edge, middle page, show search icons results only
+Once minimized, it will remember it forever for the web site that follows the same rule.
+
+Change height of results pane as big as the results page and keep the header fied (experimental)
+
+Some minor style changes
 
 
 ****************** BUGS!!!!!!! ***********************
 
-Sometimes clicking on the search engine generated links doesn't do anything anymore.
-		Fixed? Not experienced for a long time.
-		
-		Makes sure subdomain tests subdomein only and not the whole url!! Could be word in path!!
-		TODO: "give me hope" on ecosia finds urls domains without actually being results, so distinguis between domain and url find???? or what am i missing here? 
-		BUT not on google!!   Hmmm?
-		
-		boom effect not working anymore??
+PoPup still gives old result if new tab, but not completed loading yet
+=> onstartload, create or refresh tab, onnacompleted start CS (or not)
+
+when 3 keywords added and 2 also not found, it doesn't go back to 1, so whole sequence doesn't work or oinly when only 1 keyword?
+
+****************** Unresolvable problems ***********************		
+		Non bug, but buggy: ecosia finds urls domains without actually being results (e.g. "give me hope" )
+			That's because ecosia but domains between <b> tags
+
 		
 ****************** TODOS ******************************
 
 Check TODO's inline code and put here
 -------------------------------------------------------
+asked on github and seems interesting: search for same domains (of the urls)
+WEBEXTENSIONS don't allow it (https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/bookmarks/search#Parameters)
+
+Offer a dark style
+
+Put keywords in toolbar (put this in description) and clicking on them searches in current tab (so we can search in all tabs)
+Toolbar stays there until tab gone or search disabled
+(Means going through document before bm search? If so, maybe already get urls. Or do it again?
+
+
+Port to chrome?
+
+MAYBE: Keep the basicresults when already started after typing and reloading after. SHould be done on bg then though...
 
 ONCE: when bg url search fails without promise filas, chain is broken (use timer because t also happens elsewhere!) (see try..catch)
 		
@@ -50,7 +76,7 @@ WHEN ADDON MORE POPULAR:
 -- 
 setup donation link on addons page  (bitcoin?) - when firefox addons downloads start to rise only; don't wast your time!
 Make a page after update with release notes and donation request, just like session manager does
-(patreon?  or paypal? Anyway, ait until virus gone)
+(check prive planning)
 --
 Put TODO's on a site with bounties!
 
@@ -66,3 +92,13 @@ If doing different kind of searches, order them by fastest searches first
 
 Fixed: Marked keywords font color not set by search engines
 (keep this comment in "take decisions / to remember")
+
+URL TESTS:
+- should not trigger
+	- domain filter in path:
+			https://email.strava.com/uni/wf/click?upn=h1rx1pA5xlP1wxKo0fJ-2BnfC-2FQYNPLMAtkW-2F78yazWUThE5W-2FjmQQoID6kdBdgDAM3eM-2F5VzlJu0Vd84VesBpq8LJfrxfvgWroXG5kF-2Bnjch-2BA3IdYo4BxLbYgkFEs4o9tuv0HE490mDbj-2BKb3KM5PbxmM2Z9NEygVn8wAJyrvrOBv8tWQ6BAVN42dGVO6mqebhXHMq7cOGVcCwMPuubetyir-2BmgHT9ijBuZAVgLgf6agVl-2BzRwf1GtJREdDcmxoqpLdrbZPgENSxM4T8Th6qcxFvbkeJgKVvoen5YHB3kwYFM-2B0U9NwPO-2FhwPRKdySLYE0MGY-2F4p4QM7XDmBqeA-2BNJxBwW75yGoKMqkIqVOQgxufhsSlWpjV8CLg6mQrNFtJljz3Hpn1SkB0dKOVyMcetUH-2BwESg88G5YuyHE-2BOVRogiJM6kGqleR6bj4DOqk5tJpZLE-2FY0nHdh1w2g7O9kiwKRYCTs4JV2QU-2BSJJhctyey8DhcJL-2Fpc5-2B7FK4m-2BwWp7FU7r0TEzgavM-2By-2Fsere3kdAVF6teT9KOxjd8ogOZ9cZH1DxL206ZZKKaoT7lJw6Wvfj8uTRGkjIQ60F3erdVOQ-3D-3D_U3BR460aWcr2Wk8ckiH4YEEd1vWTx8Fp-2BxkbqcO5gP6-2BX-2Fs3opSR8udcks8-2BalmWUe-2FYM7yZ9C10u1717yF2Now3bOy9moMKRjJWpxx7Tv9hTUTC2xLB-2BvMhuaRT6XyGGcG0Py57arXfU8wq8kKZcX8bYGwedWloP3M-2F8heQzAKBDPpQTsmo18uOdmkcFhiJyDKbAOZKs0nST2Bk5bii1mnhZlwKpzRaiBkvbuv3XZO8YYSBHb210gWobMSaiBqYr2E5D-2BZtpqMp6EALzUA5OwYTxqIQXMXVhpXGwt5ojJ4HEGSWaMh5e-2Fw-2FRA3nZDgmWENK2IRKWSLlcNTb6qHl-2B9hBt-2BdmkNYNQBP1CN3mecg-3D
+	- maps, mail or images (tbm=isch) for google url
+			https://www.google.com/search?safe=off&tbm=isch&spell=1&sa=X&ved=0ahUKEwjQh5zbmqnbAhVsBcAKHVdpB_UQBQg3KAA&biw=1760&bih=864&dpr=1.09&q=wikipedia&tbs=ift:svg
+			https://www.google.com/maps/place/Nisa/@39.5136312,-7.6568653,15z/data=!3m1!4b1!4m5!3m4!1s0xd17f1af5fe42cc3:0x838e3f302a2cb16!8m2!3d39.5179524!4d-7.6483767
+			https://mail.google.com/mail/u/0/#search/strava.com+in%3Aall
+		

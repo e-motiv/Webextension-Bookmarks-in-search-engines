@@ -1,11 +1,16 @@
 var defaultOpts = {
 		keyhigh:	true,
 		filters: {		
-			xurl:	[],
+			xurl:	["ecosia.org/images", "dogpile.*qc=images"],
 			xsub:	["mail.google","maps.google"],
-			url:	["google(?!.*\/(?:maps|mail)\/).*", "stackoverflow.com/search"],
+			url:	["stackoverflow.com/search", "www.google.com/search", "app.getpocket.com/search"],
 			sub:	[],
-			dom:	["ask","baidu","bing","dogpile","ecosia","yahoo"],
+			dom:	["ask","baidu","bing","dogpile","ecosia","yahoo"]
+		},
+		minwhere: {
+			url: new Set(),
+			sub: new Set(),
+			dom: new Set()
 		}
 	},
 	opts,
@@ -30,6 +35,29 @@ var defaultOpts = {
 	});
 	
 	setTimeout(browser.notifications.clear, t, id);
+}
+
+//SPlit in sub- and domain
+//DIFFICULT bc of these:! 1. if no subdomain! 2. if of form (sub.)xxx.co.uk 3.many more!
+//BAse on sidanmor answer -> https://stackoverflow.com/questions/9752963/get-domain-name-without-subdomains-using-javascript
+
+const TLD2  = ["ac","ad","ae","af","ag","ai","al","am","an","ao","aq","ar","as","at","au","aw","ax","az","ba","bb","be","bf","bg","bh","bi","bj","bm","bo","br","bs","bt","bv","bw","by","bz","ca","cc","cd","cf","cg","ch","ci","cl","cm","cn","co","cr","cu","cv","cw","cx","cz","de","dj","dk","dm","do","dz","ec","ee","eg","es","et","eu","fi","fm","fo","fr","ga","gb","gd","ge","gf","gg","gh","gi","gl","gm","gn","gp","gq","gr","gs","gt","gw","gy","hk","hm","hn","hr","ht","hu","id","ie","im","in","io","iq","ir","is","it","je","jo","jp","kg","ki","km","kn","kp","kr","ky","kz","la","lb","lc","li","lk","lr","ls","lt","lu","lv","ly","ma","mc","md","me","mg","mh","mk","ml","mn","mo","mp","mq","mr","ms","mt","mu","mv","mw","mx","my","na","nc","ne","nf","ng","nl","no","nr","nu","nz","om","pa","pe","pf","ph","pk","pl","pm","pn","pr","ps","pt","pw","py","qa","re","ro","rs","ru","rw","sa","sb","sc","sd","se","sg","sh","si","sj","sk","sl","sm","sn","so","sr","st","su","sv","sx","sy","sz","tc","td","tf","tg","th","tj","tk","tl","tm","tn","to","tp","tr","tt","tv","tw","tz","ua","ug","uk","us","uy","uz","va","vc","ve","vg","vi","vn","vu","wf","ws","yt"]
+const TLD3 = ["com","edu","gov","net","mil","org","nom","sch","caa","res","off","gob","int","tur","ip6","uri","urn","asn","act","nsw","qld","tas","vic","pro","biz","adm","adv","agr","arq","art","ato","bio","bmd","cim","cng","cnt","ecn","eco","emp","eng","esp","etc","eti","far","fnd","fot","fst","g12","ggf","imb","ind","inf","jor","jus","leg","lel","mat","med","mus","not","ntr","odo","ppg","psc","psi","qsl","rec","slg","srv","teo","tmp","trd","vet","zlg","web","ltd","sld","pol","fin","k12","lib","pri","aip","fie","eun","sci","prd","cci","pvt","mod","idv","rel","sex","gen","nic","abr","bas","cal","cam","emr","fvg","laz","lig","lom","mar","mol","pmn","pug","sar","sic","taa","tos","umb","vao","vda","ven","mie","北海道","和歌山","神奈川","鹿児島","ass","rep","tra","per","ngo","soc","grp","plc","its","air","and","bus","can","ddr","jfk","mad","nrw","nyc","ski","spy","tcm","ulm","usa","war","fhs","vgs","dep","eid","fet","fla","flå","gol","hof","hol","sel","vik","cri","iwi","ing","abo","fam","gok","gon","gop","gos","aid","atm","gsm","sos","elk","waw","est","aca","bar","cpa","jur","law","sec","plo","www","bir","cbg","jar","khv","msk","nov","nsk","ptz","rnd","spb","stv","tom","tsk","udm","vrn","cmw","kms","nkz","snz","pub","fhv","red","ens","nat","rns","rnu","bbs","tel","bel","kep","nhs","dni","fed","isa","nsn","gub","e12","tec","орг","обр","упр","alt","nis","jpn","mex","ath","iki","nid","gda","inc"]
+
+var splitDom = function (u) {
+
+   let parts = u.hostname.split('.')
+   u.subdomain = ""
+
+    while (parts.length > 3) {
+    	u.subdomain += parts.shift()
+    }
+
+    if (parts.length === 3 && ((parts[1].length > 2 && parts[2].length > 2) || (TLD3.indexOf(parts[1]) === -1) && TLD2.indexOf(parts[2]) === -1)) {
+    	u.subdomain += parts.shift()
+    }
+
+   u.domain = parts.join('.')
 }
 
 /************* OPTIONS *********************************
@@ -69,7 +97,10 @@ function optsStore(o) {														//console.log("BG storeOptions", o)
 /************* PORTS & ACTIVATION **********************
  *******************************************************/
 function navCompleted(o) {
-	browser.tabs.get(o.tabId, t=>{												//console.log("navCompleted: ", o, t)
+	//Ignore frame and ajax 
+	if (o.frameId!=0) return
+	
+	browser.tabs.get(o.tabId, t=>{										//console.log("navCompleted - TAB: ", t)
 		if (myTabs.has(t.id)) {
 			t = myTabs.get(t.id)
 			t.refresh(o.url)
@@ -112,7 +143,6 @@ function updatePopUp() {												//console.log(`updatePopUp`, popPort)
 
 function tabInit(o) {														//console.log("tabInit", o)
 	let mTab = new myTab(o)
-	myTabs.set(o.id,mTab)
 	return mTab
 }
 //CLEANUP when tab closed
@@ -123,12 +153,15 @@ function tabFinish(id) {													//console.log("tabFinish",id)
 }
 class myTab {
 	constructor(tab) {
+		myTabs.set(tab.id,this)
 		this.id 		= tab.id
 		this.refresh(tab.url)
 	}
 	
 	refresh(u) {
 		this.url		= u
+		this.uri		= new URL(this.url)
+		splitDom(this.uri)
 		this.CSEnabled	= false		
 		this.filtersResolve()
 	}
@@ -146,12 +179,13 @@ class myTab {
 		} else 
 			this.filters = {}
 			
-		//order in the lines below determines priority!								
-		this.filterUrl("dom", true)
-		this.filterUrl("sub", true)
-		this.filterUrl("url", true)
-		this.filterUrl("sub", false)
-		this.filterUrl("url", false)
+		//order in the lines below determines priority!							
+		//For url has to be whole url here, because of google images (in request part), in contrast to filterSet, which only takes hostname + pathname
+		this.filterUrl("dom", true,		this.uri.domain)
+		this.filterUrl("sub", true,		this.uri.hostname)
+		this.filterUrl("url", true, 	this.url)
+		this.filterUrl("sub", false,	this.uri.hostname)
+		this.filterUrl("url", false,	this.url)
 		//Manually disabled or enabled on his tab
 		if (this.filters.tab===false)
 			this.filterResult = false
@@ -161,39 +195,38 @@ class myTab {
 		return this.filterResult
 	}
 
-	filterUrl(fType, incl) {
+	filterUrl(fType, incl, urlPart) {
 		//reset old resolutions
 		let oFName = (incl?"":"x") + fType										//;console.log(oFName, incl, this.url)
 		if ( opts.filters[oFName].length ) 
 			for ( const [i,rule] of opts.filters[oFName].entries() ) {			//console.log(i, rule)
 				//rule can be undefined if array empty slots!!
-				if (rule && RegExp(rule, 'i').test(this.url)) {
+				if (rule && RegExp(rule, 'i').test(urlPart)) {
 					this.filters[fType]			= incl
 					//To be able to delete it
 					this.filterPosition[fType]	= i
 					//To know the result and who was responsible for enabling script:
-					this.filterResult			= incl?fType:false				//;console.log('\tfilter match', i, rule,  this.filterResult)
+					this.filterResult			= incl?fType:false				//;console.log('\tfilter match',  this.filterResult)
 					return incl
 				}
 			}
 	}
 	
-	filterSet(fType, value) {															//console.log("fiterSet",fType, value, this.filterPosition, this.CSEnabled)
+	filterSet(fType, value) {													//console.log("fiterSet",fType, value, this.filterPosition, this.CSEnabled)
+
 		if (fType == "tab") {
 			this.filters.tab=value=="yes"?true:(value=="no"?false:undefined)	
 		}
 		//unset -> yes -> no -> unset
-		else if (value == "yes" || value == "no") {
-			let uri		= new URL(this.url)
-			let doms	= /([^\.]+)*\.([^\.]+\.[^\.]+)/.exec(uri.hostname)
-			let n = false
+		else if (value == "yes" || value == "no") {								//console.log(this.uri)
+			let n		= false
 			if (value == "yes") {	
-				if		(fType == "sub" && doms[1])
-					n = uri.hostname
+				if		(fType == "sub" && this.uri.subdomain)
+					n = this.uri.hostname
 				else if	(fType == "dom")
-					n = doms[2]
+					n = this.uri.domain
 				else if	(fType == "url")
-					n = uri.hostname + uri.pathname
+					n = this.uri.hostname + this.uri.pathname
 				if (n) {
 					opts.filters[fType].push(n)
 				}
@@ -201,8 +234,8 @@ class myTab {
 			else if (value == "no") {
 				if		(fType == "sub" && this.filterPosition[fType]>=0) {
 					opts.filters[fType].splice(this.filterPosition[fType],1)
-					if (doms[1])
-					n = uri.hostname
+					if (this.uri.subdomain)
+					n = this.uri.hostname
 				}
 				//No for dom does not exist, go to unset
 				else if	(fType == "dom" && this.filterPosition[fType]>=0) {
@@ -210,7 +243,7 @@ class myTab {
 				}
 				else if	(fType == "url" && this.filterPosition[fType]>=0) {
 					opts.filters[fType].splice(this.filterPosition[fType],1)
-					n = uri.hostname + uri.pathname
+					n = this.uri.hostname + this.uri.pathname
 				}
 				if (n) {
 					opts.filters["x" + fType].push(n)
@@ -255,6 +288,22 @@ class myTab {
 				
 	}
 	
+	minimize(o, t) {
+		
+		opts.minwhere[t.filterResult].add(t.filterPosition[t.filterResult])
+		
+		//store options!
+		browser.storage.local.set(opts)
+	}
+	
+	maximize(o, t) {
+		
+		opts.minwhere[t.filterResult].delete(t.filterPosition[t.filterResult])
+		
+		//store options!
+		browser.storage.local.set(opts)
+	}
+	
 	/*************** Content SCript **************************
 	 **********************************************************/
 	
@@ -269,16 +318,16 @@ class myTab {
 	  		.then(null, e=>{console.error(`Insert JS: ${e}`)})	
 	}
 	
-	CSConnect(p) {												//console.log(`Content script connected`, p)
+	CSConnect(p) {												//console.log(`Content script connected`, p, opts)
 		
 		this.CSPort = p
 		//For methods that can't get 'this'
 		p.parent = this
 		p.onMessage.addListener(this.onMsg)
 		p.onDisconnect.addListener(this.CSDisconnect)
-	
+		
 		//Start!
-		p.postMessage({fn: "setOpts", keyhigh:opts.keyhigh})
+		p.postMessage({fn: "setOpts", keyhigh:opts.keyhigh, viewMin:opts.minwhere[this.filterResult].has(this.filterPosition[this.filterResult])})
 	}
 	
 	CSDisconnect(p) {											//console.log(`Content script disconnected`, p.parent)
