@@ -5,26 +5,19 @@ Put DONE below in README.md
 build
 Commit and push files to github
 Convert description md to html. (Use existing html)
+Update firefox site "add new version"
 Update in Firefox via "update addons"
 
 ****************** DONE (for release notes before publish and some things into features of description) ******************************
-
-**You have to reset to default options to be able to remember the minimize function. I am sorry.**
-
-Default options changed: 
-  - Only searches in exact google url now (www.google.com/search) and not other google sites
-  - Included Pocket as search engine (app.getpocket.com/search)
-Fixed: Domain, SUbdomain and url filters work on whole url and not on their parts
-
-The results pane now minimizes at the right edge, middle page, show search icons results only
-Once minimized, it will remember it forever for the web site that follows the same rule.
-
-Change height of results pane as big as the results page and keep the header fied (experimental)
-
-Some minor style changes
+- toolbar text comes outside toolbar
 
 
 ****************** BUGS!!!!!!! ***********************
+
+ecosia: 
+	- text invisible (white text on whit bg) ?? WHEN?
+
+The url search doesn't add the results to the view (look on google for "vegan nutrition analysis" with my bookmarks from non dev firefox)
 
 PoPup still gives old result if new tab, but not completed loading yet
 => onstartload, create or refresh tab, onnacompleted start CS (or not)
@@ -37,6 +30,8 @@ when 3 keywords added and 2 also not found, it doesn't go back to 1, so whole se
 
 		
 ****************** TODOS ******************************
+
+Make resizing more visible and on the left instead of firefox resizing. Copy code from here: https://css-tricks.com/snippets/css/a-guide-to-flexbox/#cp_embed_EKEYob
 
 Check TODO's inline code and put here
 -------------------------------------------------------

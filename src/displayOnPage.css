@@ -1,3 +1,30 @@
+
+body {
+	position: relative;
+	top: 2rem;
+}
+
+
+#bstoolbar {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100vw;
+	height:1.6rem;
+	background-color: white;
+	z-index: 1000;
+	padding: 0.2rem;
+	box-shadow: 0px 0px 5px black;
+	box-sizing: content-box;
+}
+#bstoolbar > span {
+	cursor: pointer;
+	padding: 0.2em 0.5em;
+	margin: auto 0.5em;
+	font-size: 0.8rem;
+	display: inline-block;
+}
+
 /* Arrow below scroll */
 
 #bsbelow {
@@ -12,50 +39,22 @@
 	font-size: 20px;
 	cursor:	pointer;
 }
-body {
-	position: relative;
-	top: 2em;
-}
 
-#bstoolbar {
-	position: fixed;
-	top: 0;
-	left: 0;
-	width: 100vw;
-	height: 1em;
-	background-color: white;
-	z-index: 1000;
-	padding: 0.5em;
-	box-shadow: 0px 0px 3px black;
-}
-#bstoolbar > span {
-	cursor: pointer;
-	padding: 0.2em 0.5em;
-	margin: 0 0.5em;
-}
-
-
-#bstoolbar {
-	position: fixed;
-	top: 0;
-	left: 0;
-	width: 100vw;
-}
 
 /* myView */
 #bs-pane {
+	display: flex;
 	box-sizing: border-box;
 	position: absolute;
 	top: 80px;
 	right: 0;
 	z-index: 9000;
-	background-color: hsl(0, 0%, 100%);
-	box-shadow: -0.3em 0.3em 0.5em;
-	border-radius: 5px;
+	background-color: hsl(0, 0%, 95%);
+	border: 1px gray solid;
 	max-width: 50vw;
-	font-size: small;
+	font-size: 0.7rem;
 	font-family: arial,sans-serif;
-	max-height: calc(100% - 80px);
+	max-height: calc(100% - 80px - 2rem - 0.3em);
 	overflow: hidden scroll;
 }
 
@@ -70,13 +69,15 @@ body {
 	margin-right: 2em;
 	background-size: contain;
 }
+#bsmaxside {
+max-width: calc(50vw - 1.3rem);
+}
 /* Minimized panel*/
 
-#bs-pane.min > :not(#flextitle), .min #flextitle h2, .min #bstime, .min #bsmin, .min #bsmsg, #bsmax {
+.min #bsbelowtit, .min #flextitle h2, .min #bstime, .min #bsmsg {
 	display: none;
 }
 #bs-pane.min {
-	display: flex;
 	position: fixed;
 	top: 50vh;
 	padding: 0;
@@ -86,61 +87,66 @@ body {
 	height: auto !important;
 	resize: none;
 	align-items: stretch;
+	overflow: hidden;
 }
-#bs-pane.min #bsmax{
-	display: flex;
+#bs-pane #bsmax{
+	display: flex !important;
 	align-items: center;
-	font-size: 1.2em;
-	padding: 0.5em;
+	font-size: 0.7rem;
+	padding: 0.3em;
 	cursor: pointer;
 }
-#bs-pane.min #bsmax:hover {
+#bsmax::before {
+	content: "▶";
+}
+#bs-pane.min #bsmax::before {
+	content: "◀";
+}
+#bs-pane #bsmax:hover {
 	background: #0000006e;
+}
+
+.min #flextitle #bs-icon {
+	margin:0.5em 1.2em 0.2em 0.2em;
+	align-self: center;
+	height: 1.5em;
+	width: 1.5em;
 }
 
 /* Minimize etc*/
 
-#bs-pane #bsmin, #bs-pane #bsclose {
+#bs-pane #bsclose {
 	position: absolute;
+	top: 2px;
+	right: 2px;
 	box-sizing: border-box;
-	width: 20px;
-	height: 20px;
-	text-align: center;
-}
-#bs-pane #bsmin, #bs-pane #bsclose {
-	top: 0.3em;
+	width: 2em;
+	height: 2em;
 	border-radius: 5px;
 	text-align: center;
 	line-height: 18px;
-	padding: 0.1em;
+	padding: 0.2em;
 	font-weight: bold;
+	font-size: 0.55rem;
 	vertical-align: middle;
 }
-#bs-pane #bsmin:hover, #bs-pane #bsclose:hover {
+#bs-pane #bsclose:hover {
 	text-decoration: none;
 	background: rgba(183, 0, 0, 0.6);
 }
-#bs-pane #bsmin {
-	right: 1.5em;
-	background: transparent;
-}
 
-#bs-pane #bsclose {
-	right: 0.2em;
-}
 #flextitle {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
-	margin-bottom: 1em;
 }
 
 #bs-pane:not(.min) #flextitle {
-	position: fixed;
-	right: 0;
 	background: white;
 	padding: 1.5em 1em 1em 0em;
 	border: 1px solid #00000021;
+	margin-top: 0.3rem;
+	margin-bottom: 0.5em;
 }
 
 .min #flextitle {
@@ -148,12 +154,8 @@ body {
 	align-items: stretch;
 }
 .min #flextitle .info {
-	margin:1em 0.8em 0.2em 0.2em;
-	padding: 0.5em 1em; 
-}
-.min #flextitle #bs-icon {
-	margin:0.5em 0.2em 0.2em 0.2em;
-	align-self: center;
+	margin:0.3em;
+	padding: 0.2em 0.5em; 
 }
 
 #bs-pane h2 {
@@ -171,8 +173,6 @@ body {
 }
 #bs-pane #bstime:hover {
 	font-size: 150%;
-	position: absolute;
-	right: 0;
 	background: white;
 	z-index: 99999999;
 	color: black;
@@ -181,30 +181,26 @@ body {
 	border: none;
 	color: #0000002b;
 	font-size: 60%;
-	margin-left: 4em;
-	text-align: right;
+	align-self: self-end;
 }
 #bs-pane #bsmsg {
 	margin:1em;
 }
 
-#bs-pane #bsbelowtit {
-	margin-top: 6.5em;
-}
-
 #bs-pane #bsresults {
 	box-sizing: border-box;
 	height: inherit;
-	padding: 2em;
 }
 #bs-pane h3 {
-	font-size: 130%;
+	/*! font-size: 1em; */
 	margin:0;
 	padding:0;
+	font-weight: 400;
 }
 
 #bs-pane a {
 	text-decoration: none;
+	color: #003177de;
 }
 
 #bs-pane a:hover {
@@ -212,7 +208,9 @@ body {
 }
 
 #bs-pane #bsresults>div {
-	margin-bottom: 1.5em;
+	padding: 0.4em 1em;
+	background-color: #ffffffe8;
+	margin-bottom: 0.2em;
 }
 #bs-pane #bsresults h3, #bs-pane #bsresults cite {
 	white-space: nowrap;
@@ -224,6 +222,7 @@ body {
 #bs-pane #bsresults h3:hover, #bs-pane #bsresults cite:hover {
 	white-space: normal;
 	overflow-x: visible;
+	width: auto;
 }
 
 #bs-pane #bsresults cite {
@@ -274,6 +273,7 @@ body {
 
 #bsmsg.halfsuccess::before {
 	content: "-1";
+	display: inline-block;
 	vertical-align: middle;
 	font-size: 1.3em;
 	font-weight: bold;

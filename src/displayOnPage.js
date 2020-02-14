@@ -28,19 +28,20 @@ let	searchBox	= false,
 	myLayout	= `
 	<div id="bstoolbar"></div>
 	<div id="bs-pane">
-	<div id="bsmax">◀</div>
+	<a id="bsclose" href="javascript:">X</a>
+	<div id="bsmax"></div>
+	<div id="bsmaxside">
+	<span id="bstime" title="Timing results&#10;  Keywords search&#10;  URL Indexing &#10; URL Search engine results match"></span>
 	<div id="flextitle">
 	<div id="bs-icon">&nbsp;</div>
 	<h2>Bookmarks search</h2>
 	<span id="bsbfound" class="info" title="Keyword search">${waitAni} <span id="bsbmsg"></span></span> 
 	<span id="bsufound" class="info" title="URL match">${waitAni} <span id="bsumsg"></span></span>
-	<span id="bstime" title="Timing results&#10;  Keywords search&#10;  URL Indexing &#10; URL Search engine results match"></span>
-	<a id="bsmin" href="javascript:">_</a>
-	<a id="bsclose" href="javascript:">X</a>
 	</div>	
 	<div id="bsbelowtit">
 	<div id="bsmsg" class="info" hidden></div>
 	<div id="bsresults"></div>
+	</div>
 	</div>
 	<div id="bsbelow" hidden></div>
 	</div>
@@ -73,7 +74,7 @@ function setOpts(a) {												//console.log("setOpts", a)
 	viewAdd(a.viewMin)
 	
 	//Grab some elements
-	var test = ["bstoolbar", "bsmin", "bsmax", "bsclose", "bsbfound", "bsufound", "bsmsg", "bsbmsg", "bsumsg", "bstime", "bsresults", "bsbelow"]
+	var test = ["bstoolbar", "bsmax", "bsclose", "bsbfound", "bsufound", "bsmsg", "bsbmsg", "bsumsg", "bstime", "bsresults", "bsbelow"]
 	test
 		.forEach(s=>{
 			this[s]=document.getElementById(s)
@@ -82,8 +83,7 @@ function setOpts(a) {												//console.log("setOpts", a)
 	bWait	= bsbfound	.firstElementChild
 
 	uWait	= bsufound	.firstElementChild
-	bsmin		.addEventListener('click', minimize, false)
-	bsmax		.addEventListener('click', maximize, false)
+	bsmax		.addEventListener('click', minmax, false)
 	bsclose		.addEventListener('click', viewRemove, false)
 	bsbelow		.addEventListener('click', (e)=> {lastFUEl.scrollIntoView()}, false)
 	bsufound	.addEventListener('click', (e)=> {
@@ -108,13 +108,14 @@ function viewAdd(min)  {													//console.log("viewAdd", myView, min)
 		myView.classList.add("min")
 	portBG.postMessage({fn: "CSAfterEnabled"})
 }
-function minimize(e) {
+function minmax(e) {													console.log("minmax", myView.classList)
+	if (myView.classList.contains("min")) {
+		myView.classList.remove("min")
+		portBG.postMessage({fn: "maximize"})
+		return;
+	}
 	myView.classList.add("min")
 	portBG.postMessage({fn: "minimize"})
-}	
-function maximize(e) {
-	myView.classList.remove("min")
-	portBG.postMessage({fn: "maximize"})
 }
 function viewRemove(e=null)  {											//console.log("Disabling content script", e, myView, myView.parentNode)
     if (searchDelay) {
